@@ -1,19 +1,24 @@
-# Use the official Python 3.9 image
-FROM python:3.9
+# Use an official Node.js image as the base
+FROM node:16-alpine
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy requirements.txt and install dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
 
-# Copy the entire Django project code
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
 
-# Expose port 8000
+# Expose the port your Express server will run on
 EXPOSE 8000
 
-# Start the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Define the command to run the application
+CMD ["node", "index.js"]
 
+# Command to build the docker image: docker build -t express-backend .
+
+# Command to run docker container: docker run -p 8000:8000 express-backend
