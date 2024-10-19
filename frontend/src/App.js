@@ -38,11 +38,13 @@
 
 import React from 'react';
 import WelcomePage from './pages/WelcomePage'; 
+// import SignIn from './pages/SignIn';
 
 function App() {
   return (
     <div className="App">
       <WelcomePage />
+      {/* <SignIn /> */}
     </div>
   );
 }
