@@ -1,51 +1,34 @@
-// import logo from './logo.svg';
-// import { useEffect, useState } from 'react';
-// import './App.css';
+
+// import React from 'react';
+// import WelcomePage from './pages/WelcomePage'; 
+// // import SignIn from './pages/SignIn';
 
 // function App() {
-
-//   const [testData, setTestData] = useState('');
-
-//   useEffect(() => {
-//     fetch('/test')
-//       .then((response) => response.json())
-//       .then((data) => setTestData(data.message));
-//   }, []);
-
 //   return (
 //     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <p>{!testData ? "Loading..." : testData}</p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
+//       <WelcomePage />
+//       {/* <SignIn /> */}
 //     </div>
 //   );
 // }
 
 // export default App;
 
-
 import React from 'react';
-import WelcomePage from './pages/WelcomePage'; 
-// import SignIn from './pages/SignIn';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import WelcomePage from './pages/WelcomePage';
+import SignIn from './pages/SignIn';
 
 function App() {
   return (
-    <div className="App">
-      <WelcomePage />
-      {/* <SignIn /> */}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>     
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/signin" element={<SignIn />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
