@@ -16,6 +16,11 @@ const LoginPage = () => {
     }, 1000); // 2000 milliseconds = 2 seconds
   };
 
+    const handleSignUpClick = (e) => {
+        e.preventDefault();
+        navigate('/signup');
+    };
+
   return (
     <div className="login-page">
       <Nav />
@@ -34,7 +39,7 @@ const LoginPage = () => {
             </button>
           </form>
           <p className="signup-text">
-            Don’t have an account? <a href="/signup">Sign up</a>
+            Don’t have an account? <a href="#" onClick={handleSignUpClick}>Sign up</a>
           </p>
         </div>
       </div>

@@ -355,3 +355,81 @@ body, html {
 .action-button:hover {
   background-color: #f0f0f0;
 }
+
+.Registrationpage {
+  background-color: #000000;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.registration-container {
+  width: 100%;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.registration-box {
+  background-color: #f2f2f2;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+.registration-box h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+  color: #333333;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.register-button {
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.register-button:hover {
+  background-color: #333333;
+}
+
+.signup-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333333;
+}
+
+.signup-text a {
+  color: #000;
+  text-decoration: none;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
