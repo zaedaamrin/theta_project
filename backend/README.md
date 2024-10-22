@@ -7,11 +7,11 @@ manage user-specific data, such as their URL library and other resources, as wel
 The React frontend interacts with this backend via HTTP requests using the React Fetch API.
 Example usage: The frontend calls /api/sources/ to render a list of URLs saved by the user.
 
-# Backend API Endpoints
-## Get all source URLs in the user’s library
+## Backend API Endpoints
+### Get all source URLs in the user’s library
 `GET /api/sources/`
 
-### Response:
+#### Response:
 ```
 <HTTP STATUS CODE 200>
 {
@@ -25,11 +25,11 @@ Example usage: The frontend calls /api/sources/ to render a list of URLs saved b
   }
 }
 ```
-
-## Post source URLs from the user
+---
+### Post source URLs from the user
 `POST /api/sources/`
 
-### Request body:
+#### Request body:
 ```
 {
   “0”: “https://www.allrecipes.com/butternut-squash-chili-recipe-8725719”,
@@ -38,18 +38,29 @@ Example usage: The frontend calls /api/sources/ to render a list of URLs saved b
 }
 ```
 
-### Response:
+#### Response:
 ```
 <HTTP STATUS CODE 201>
 {
   "message": “URLs received successfully!”
 }
 ```
+---
+### Delete source URL from the database
+`DELETE /api/sources/`
 
-## Get chat history of user's messages and the assistant's responses
+#### Response:
+```
+<HTTP STATUS CODE 201>
+{
+  "message": “URL deleted successfully!”
+}
+```
+---
+### Get chat history of user's messages and the assistant's responses
 `GET /api/messages`
 
-### Response:
+#### Response:
 ```
 <HTTP STATUS CODE 200>
 {
@@ -66,18 +77,18 @@ Example usage: The frontend calls /api/sources/ to render a list of URLs saved b
   }
 }
 ```
-
-## Post user's message from the chat 
+---
+### Post user's message from the chat 
 `POST /api/messages/`
 
-### Request body:
+#### Request body:
 ```
 {
   “message”: “how many cans of beans do I need for the chili recipe?”
 }
 ```
 
-### Response:
+#### Response:
 ```
 <HTTP STATUS CODE 201>
 {
