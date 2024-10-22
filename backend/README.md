@@ -4,7 +4,7 @@ This project provides a NodeJS backend API that serves as the data source for th
 manage user-specific data, such as their URL library and other resources, as well as retrieve answers for the AI interactions by making HTTP requests.
 
 ## How the Frontend React App Uses This API
-The React frontend interacts with this backend via HTTP requests using the React Fetch API.
+The React frontend interacts with this backend via HTTP requests using the Fetch API.
 Example usage: The frontend makes a POST request to /api/sources/ to save a new URL inputted by the user.
 ```
 const response = await fetch('/api/sources', {
