@@ -6,7 +6,7 @@ manage user-specific data, such as their URL library and other resources, as wel
 ## How the Frontend React App Uses This API
 The React frontend interacts with this backend via HTTP requests using the Fetch API.
 
-Example usage: The frontend makes a POST request to /api/sources/ to save a new URL inputted by the user.
+Example usage: The frontend makes a POST request to /api/sources/ to save a new URL inputted by the user, where urlInput is an object containing the user's input.
 ```
 const response = await fetch('/api/sources', {
       method: 'POST',
