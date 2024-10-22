@@ -6,7 +6,7 @@ const Nav = () => {
   const navigate = useNavigate(); 
 
   const handleNavClick = () => {
-    navigate('/'); 
+    navigate('/weclome'); 
   };
 
   return (
