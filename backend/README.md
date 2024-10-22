@@ -18,6 +18,15 @@ const response = await fetch('/api/sources', {
 ```
 
 ## Backend API Endpoints
+### Overview
+| Endpoint Description | HTTP Method & Route |
+|----------------------|----------------------|
+| Get all source URLs in the user’s library | `GET /api/sources/` |
+| Post source URLs from the user | `POST /api/sources/` |
+| Delete source URL from the database | `DELETE /api/sources/` |
+| Get chat history of user's messages and the assistant's responses | `GET /api/messages` |
+| Post user's message from the chat | `POST /api/messages/` |
+
 ### Get all source URLs in the user’s library
 `GET /api/sources/`
 
