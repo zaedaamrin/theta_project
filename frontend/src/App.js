@@ -5,6 +5,7 @@ import WelcomePage from './pages/WelcomePage';
 import SignIn from './pages/SignIn';
 import PersonalHome from './pages/PersonalHome';
 import RegistrationPage from './pages/RegistrationPage';
+import URLSubmission from './pages/URLSubmissionPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/personal-home" element={<PersonalHome />} />
           <Route path="/signup" element={<RegistrationPage />} />
+          <Route path="/add-url" element={<URLSubmission />} />
 
         </Routes>
       </div>

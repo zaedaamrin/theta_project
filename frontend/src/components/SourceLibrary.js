@@ -1,6 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; 
+
 
 const SourceLibrary = () => {
+  const navigate = useNavigate(); 
+  
+    const handleAddURLClick = () => {
+      navigate('/add-url'); 
+    };
+    
   return (
     <div className="source-library" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div className="library-content">
@@ -23,7 +31,7 @@ const SourceLibrary = () => {
             padding: '10px 60px',
             cursor: 'pointer'
           }}
-        >
+          onClick={handleAddURLClick}>
           Add URL
         </button>
       </div>

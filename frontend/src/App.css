@@ -414,3 +414,115 @@ body, html {
 .signup-text a:hover {
   text-decoration: underline;
 }
+
+.url-submission-page {
+  background-color: #000000;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.url-submission-container {
+  background-color: #fff;
+  color: #333;
+  border-radius: 10px;
+  padding: 40px; /* Increased padding for a more spacious feel */
+  width: 90%; /* Set width to 90% of the viewport width */
+  max-width: 900px; /* Increased max-width to allow a larger container */
+  min-height: 400px; /* Added min-height for a taller container */
+  margin: 20px auto; /* Added margin-top to move container down */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.url-submission-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.url-input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.url-input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.add-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.url-list-container {
+  margin-bottom: 20px;
+}
+
+.url-list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.url-list {
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  padding: 15px;
+  max-height: 400px; 
+  overflow-y: auto;
+}
+
+.url-item {
+  padding: 10px 0; 
+  border-bottom: 1px solid #ddd;
+}
+
+.url-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.url-count {
+  font-size: 16px;
+}
+
+.submit-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.profile-avatar {
+  position: absolute;
+  top: 15px; 
+  right: 15px; 
+  width: 40px; 
+  height: 40px;
+  background-color: white; 
+  border-radius: 50%; 
+  padding: 2px; 
+  cursor: pointer;
+  z-index: 1001;
+}
