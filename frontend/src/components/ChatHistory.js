@@ -24,7 +24,7 @@ const ChatHistory = () => {
             cursor: 'pointer'
           }}
         >
-          Chat
+          New Chat
         </button>
       </div>
     </div>

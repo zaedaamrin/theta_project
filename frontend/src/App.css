@@ -430,36 +430,44 @@ body, html {
   background-color: #fff;
   color: #333;
   border-radius: 10px;
-  padding: 40px; /* Increased padding for a more spacious feel */
-  width: 90%; /* Set width to 90% of the viewport width */
-  max-width: 900px; /* Increased max-width to allow a larger container */
-  min-height: 400px; /* Added min-height for a taller container */
-  margin: 20px auto; /* Added margin-top to move container down */
+  padding: 40px;
+  width: 90%;
+  max-width: 900px;
+  min-height: 500px;
+  margin: 20px auto;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 .url-submission-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  text-align: left;
 }
 
 .url-input-container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
-.url-input {
-  flex: 1;
+.url-input,
+.url-name-input {
+  width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
-  margin-right: 10px;
   font-size: 16px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 .add-button {
+  align-self: flex-end;
   background-color: #333;
   color: #fff;
   border: none;
@@ -468,10 +476,13 @@ body, html {
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
+  margin-top: 10px;
 }
 
 .url-list-container {
+  width: 100%;
   margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .url-list-title {
@@ -481,15 +492,17 @@ body, html {
 }
 
 .url-list {
+  width: 100%;
   background-color: #f5f5f5;
   border-radius: 5px;
   padding: 15px;
-  max-height: 400px; 
+  height: 200px;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .url-item {
-  padding: 10px 0; 
+  padding: 10px 0;
   border-bottom: 1px solid #ddd;
 }
 
@@ -497,6 +510,8 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .url-count {
@@ -526,3 +541,4 @@ body, html {
   cursor: pointer;
   z-index: 1001;
 }
+
