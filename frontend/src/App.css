@@ -634,3 +634,145 @@ body, html {
 .delete-button:hover {
   background-color: #f0f0f0;
 }
+
+.chatpage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-top: 65px; /* This should match the height of your nav bar */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.chatpage-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sidebar header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between heading and button */
+  margin-bottom: 10px;
+}
+
+.sidebar-header h2 {
+  margin: 0; /* Remove any default margin */
+  font-size: 18px; /* Adjust font size if necessary */
+}
+
+.plus{
+  background-color: #444;
+  border: none;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px; /* Add margin if needed for spacing */
+}
+
+.source-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.source-item {
+  background-color: white;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.total-sources {
+  margin-top: auto;
+}
+
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #000;
+  color: white;
+  padding: 20px;
+  overflow: hidden; /* Prevent scrolling */
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  background-color: #111;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column; /* Ensure messages stack vertically */
+}
+
+.message {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  color: #333;
+  word-wrap: break-word;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background-color: white;
+  border-radius: 10px 10px 10px 0;
+}
+
+.user-message {
+  align-self: flex-end;
+  background-color: white;
+  border-radius: 10px 10px 0 10px;
+}
+
+.chat-input-container {
+  display: flex;
+  background-color: #222;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: auto;
+  width: 100%; /* Keep the full width */
+  box-sizing: border-box;
+}
+
+.chat-input-field {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background-color: white;
+  color: #333;
+}
+
+.send-button {
+  background-color: #444;
+  color: white;
+  margin-left: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}

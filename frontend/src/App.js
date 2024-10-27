@@ -7,6 +7,7 @@ import PersonalHome from './pages/PersonalHome';
 import RegistrationPage from './pages/RegistrationPage';
 import URLSubmission from './pages/URLSubmissionPage';
 import URLSubmission2 from './pages/URLSubmissionPage2';
+import ChatPage from './pages/ChatPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signup" element={<RegistrationPage />} />
           <Route path="/add-url" element={<URLSubmission />} />
           <Route path="/add-url-2" element={<URLSubmission2 />} />
+          <Route path="/chatpage" element={<ChatPage />} />
 
         </Routes>
       </div>

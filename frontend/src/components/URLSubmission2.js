@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const URLSubmissionTable2 = () => {
   const [url, setUrl] = useState('');
   const [urlName, setUrlName] = useState('');
   const [urlList, setUrlList] = useState([]);
+  
+  const navigate = useNavigate();
 
   const handleAddUrl = () => {
     if (url && urlName) {
@@ -29,8 +32,7 @@ const URLSubmissionTable2 = () => {
   const handleSubmit = () => {
     if (urlList.length > 0) {
       console.log('Submitted URLs:', urlList);
-      alert('URLs submitted successfully!');
-      setUrlList([]);
+      navigate('/chatpage', { state: { urlList } }); // Pass urlList as state
     }
   };
 
@@ -52,7 +54,7 @@ const URLSubmissionTable2 = () => {
           value={urlName}
           onChange={handleUrlNameChange}
           className="url-name-input"
-          onKeyDown={(e) => e.key === 'Enter' && handleAddUrl()} // 检测Enter键
+          onKeyDown={(e) => e.key === 'Enter' && handleAddUrl()}
         />
         <button onClick={handleAddUrl} className="add-button">
           Add
