@@ -1,12 +1,14 @@
 const { Router } = require("express");
 const { chatController } = require("../controllers/chats.js");
 
-router.get('/api/:userId/chat', chatController.getChats);
-router.post('/api/:userId/chat', chatController.postChat);
+const router = new Router();
 
-router.get('/api/:userId/chat/:chatId', chatController.getChat);
-router.delete('/api/:userId/chat/:chatId', chatController.deleteChat);
+router.get('/api/:userId/chats', chatController.getChats);
+router.post('/api/:userId/chats', chatController.postChat);
 
-router.post('/api/:userId/chat/:chatId/message', chatController.postMessage);
+router.get('/api/:userId/chats/:chatId', chatController.getChat);
+router.delete('/api/:userId/chats/:chatId', chatController.deleteChat);
+
+router.post('/api/:userId/chats/:chatId/message', chatController.postMessage);
 
 module.exports = { router };

@@ -1,5 +1,5 @@
 const chatController = {
-    getChats: (res, req) => {
+    getChats: (req, res) => {
         const user = parseInt(req.params.userId);
 
         // TODO: get chats associated with user when integrated with db
@@ -7,7 +7,7 @@ const chatController = {
         res.json({chats: "placeholder for chats"});
     },
 
-    postChat: () => {
+    postChat: (req, res) => {
         const user = parseInt(req.params.userId);
 
         // TODO: create new chat associated with user when integrated with db
@@ -15,7 +15,7 @@ const chatController = {
         res.status(201).json({message: "Chat created!"});
     },
 
-    getChat: (res, req) => {
+    getChat: (req, res) => {
         const user = parseInt(req.params.userId);
         const chat = parseInt(req.params.chatId);
 
@@ -24,7 +24,7 @@ const chatController = {
         res.json({message: "placeholder for chat data"});
     },
 
-    deleteChat: (res, req) => {
+    deleteChat: (req, res) => {
         const user = parseInt(req.params.userId);
         const chat = parseInt(req.params.chatId);
 
@@ -33,7 +33,7 @@ const chatController = {
         res.json({message: "Deleted chat!"});
     },  
     
-    postMessage: () => {
+    postMessage: (req, res) => {
         const user = parseInt(req.params.userId);
         const chat = parseInt(req.params.chatId);
 

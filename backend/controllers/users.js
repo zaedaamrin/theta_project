@@ -12,7 +12,7 @@ const userController = {
         res.status(201).json({message: "Chat created!"});
     },
 
-    getUser: () => {
+    getUser: (req, res) => {
         const user = parseInt(req.params.userId);
 
         // TODO: implement when connected with db
