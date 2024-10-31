@@ -20,6 +20,7 @@ class Database {
     } catch (error) {
       console.error('Error connecting to the database:', error);
       this.connected = false;
+      throw error; 
     }
   }
 
@@ -38,20 +39,20 @@ class Database {
   async executeQuery(query) {
     const request = this.poolconnection.request();
     const result = await request.query(query);
-
+    
     return result.rowsAffected[0];
   }
 
   async create(data) {
     const request = this.poolconnection.request();
-
+    
     request.input('firstName', sql.NVarChar(255), data.firstName);
     request.input('lastName', sql.NVarChar(255), data.lastName);
-
+    
     const result = await request.query(
       `INSERT INTO Person (firstName, lastName) VALUES (@firstName, @lastName)`
     );
-
+   
     return result.rowsAffected[0];
   }
 
@@ -127,3 +128,7 @@ const createDatabaseConnection = async (passwordConfig) => {
 };
 
 module.exports = { Database, createDatabaseConnection };
+
+//test
+//const db = new Database();
+//db.connect();

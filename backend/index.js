@@ -1,8 +1,14 @@
-const express = require('express');
+//const express = require('express');
 const dotenv = require('dotenv').config();  
+
+const { createDatabaseConnection } = require('./database');
+const dbConfig = require('./config'); 
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+
+// enabling JSON parsing for incoming requests
+app.use(express.json()); 
 
 app.get('/', (req, res) => {
   res.send("Hi smart memory!");
@@ -13,8 +19,24 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Hello from the backend!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// init database connection 
+async function initializeDatabase() {
+  try {
+    const database = await createDatabaseConnection(dbConfig.passwordConfig); 
+    console.log('Database initialized successfully.');
+
+    // confirming the db instance is accessible throughout app
+    app.locals.database = database;
+  } catch (error) {
+    console.error('Failed to initialize the database:', error);
+  }
+}
+
+// starting server after db init
+initializeDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
 });
 
 // //the code below is only for testing database connection!
