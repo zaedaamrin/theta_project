@@ -18,7 +18,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/personal-home" element={<PersonalHome />} />
           <Route path="/signup" element={<RegistrationPage />} />
-          <Route path="/add-url" element={<URLSubmission />} />
+          {/* <Route path="/add-url" element={<URLSubmission />} /> */}
           <Route path="/add-url-2" element={<URLSubmission2 />} />
           <Route path="/chatpage" element={<ChatPage />} />
 

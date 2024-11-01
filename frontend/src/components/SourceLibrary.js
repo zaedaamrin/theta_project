@@ -6,7 +6,7 @@ const SourceLibrary = () => {
   const navigate = useNavigate(); 
   
     const handleAddURLClick = () => {
-      navigate('/add-url'); 
+      navigate('/add-url-2'); 
     };
     
   return (

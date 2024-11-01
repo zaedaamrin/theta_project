@@ -17,8 +17,19 @@ const URLSubmissionTable2 = () => {
   };
 
   const handleUrlChange = (e) => {
-    setUrl(e.target.value);
-  };
+    let inputUrl = e.target.value;
+
+    if (!inputUrl.startsWith("https://")) {
+      inputUrl = "https://" + inputUrl;
+    }
+  
+    try {
+      const urlObj = new URL(inputUrl); 
+      setUrl(urlObj.href); 
+    } catch (err) {
+      console.error("Invalid URL"); 
+    }
+  };  
 
   const handleUrlNameChange = (e) => {
     setUrlName(e.target.value);
