@@ -1,6 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ChatHistory = () => {
+  const navigate = useNavigate();
+
+  const handleNewChatClick = () => {
+    navigate('/chatpage'); // Update with the correct path to ChatPage
+  };
+
   return (
     <div className="chat-history" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div className="history-content">
@@ -23,6 +30,7 @@ const ChatHistory = () => {
             padding: '10px 60px',
             cursor: 'pointer'
           }}
+          onClick={handleNewChatClick}
         >
           New Chat
         </button>

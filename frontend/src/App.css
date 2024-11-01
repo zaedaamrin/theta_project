@@ -776,3 +776,51 @@ body, html {
   border: none;
   cursor: pointer;
 }
+
+.back-to-home {
+  display: inline-flex;
+  align-items: center;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.back-to-home:hover {
+  color: #555; /* Optional: a lighter color on hover */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Gray overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  width: 90%; /* Increased width */
+  max-width: 1000px; /* Increased maximum width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+}
+
+.source-item a {
+  color: black; /* Change link color to black */
+  text-decoration: none; /* Remove underline */
+}
+
+.source-item a:hover {
+  color: #555; /* Optional: add a hover effect if needed */
+  text-decoration: none; /* Keep underline removed on hover */
+}
