@@ -18,7 +18,7 @@ const RegistrationPage = () => {
   };
 
   const isPasswordValid = (password) => {
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
     return passwordPattern.test(password);
   };
 
@@ -36,7 +36,7 @@ const RegistrationPage = () => {
     }
 
     if (!isPasswordValid(password)) {
-      setError("Password must contain at least one uppercase letter, one lowercase letter, and one special character (!@#$%^&*).");
+      setError("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, and one special character (!, @, #, $, %, ^, &, *).");
       return;
     }
 
