@@ -434,7 +434,7 @@ body, html {
   width: 90%;
   max-width: 900px;
   min-height: 500px;
-  margin: 20px auto;
+  margin: 80px auto 20px auto;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
