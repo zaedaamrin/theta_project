@@ -21,6 +21,9 @@
     "@types/node": "^22.8.6"
   },
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "axios": "^1.7.7",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "^5.0.1"
   }
 }

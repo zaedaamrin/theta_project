@@ -1,35 +1,30 @@
-import logo from './logo.svg';
-import { useEffect, useState } from 'react';
-import './App.css';
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import WelcomePage from './pages/WelcomePage';
+import SignIn from './pages/SignIn';
+import PersonalHome from './pages/PersonalHome';
+import RegistrationPage from './pages/RegistrationPage';
+import URLSubmission from './pages/URLSubmissionPage';
+import URLSubmission2 from './pages/URLSubmissionPage2';
+import ChatPage from './pages/ChatPage';
 
 function App() {
-
-  const [testData, setTestData] = useState('');
-
-  useEffect(() => {
-    fetch('/test')
-      .then((response) => response.json())
-      .then((data) => setTestData(data.message));
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>{!testData ? "Loading..." : testData}</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>     
+          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/personal-home" element={<PersonalHome />} />
+          <Route path="/signup" element={<RegistrationPage />} />
+          {/* <Route path="/add-url" element={<URLSubmission />} /> */}
+          <Route path="/add-url-2" element={<URLSubmission2 />} />
+          <Route path="/chatpage" element={<ChatPage />} />
+
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
