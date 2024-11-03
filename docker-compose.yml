@@ -1,26 +1,12 @@
 services:
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
-    ports:
-      - "5432:5432"
-
   backend:
     build: ./backend
     volumes:
       - ./backend:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     environment:
-      - POSTGRES_DB=mydb
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
-
+      - NODE_ENV=development
   frontend:
     build: ./frontend
     volumes:

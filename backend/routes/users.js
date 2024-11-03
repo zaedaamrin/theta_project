@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const { userController } = require("../controllers/users.js");
+import { Router } from 'express';
+import { userController } from "../controllers/users.js";
 
 const router = new Router();
 
@@ -8,4 +8,4 @@ router.post('/api/users', userController.postUser);
 
 router.get('/api/users/:userId', userController.getUser);
 
-module.exports = { router };
+export { router };

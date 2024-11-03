@@ -46,4 +46,4 @@ const chatController = {
     }
 }
 
-module.exports = { chatController };
+export { chatController };

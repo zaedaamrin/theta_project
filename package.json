@@ -1,0 +1,26 @@
+{
+  "name": "theta_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YW-2022/theta_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YW-2022/theta_project/issues"
+  },
+  "homepage": "https://github.com/YW-2022/theta_project#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.48.2",
+    "express": "^4.21.1",
+    "@types/node": "^22.8.6"
+  },
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}

@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node --env-file-.env index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.1"
+    "@playwright/test": "^1.48.2",
+    "async-retry": "^1.3.3",
+    "express": "^4.21.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
-  "proxy": "http://localhost:8000"
-
+  "proxy": "http://localhost:8000",
+  "type": "module"
 }
