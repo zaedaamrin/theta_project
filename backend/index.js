@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
+import cors from 'cors';
 // import swaggerSpec from './swagger';
 import swaggerDocument from './openapi.json' assert { type: 'json' };
 
@@ -45,6 +46,8 @@ async function loadRouters() {
 loadRouters().catch(err => console.error('Error loading routers:', err));
 
 // const router = new Router();
+
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 // // Testing our server:
 app.get('/api', (req, res) => {

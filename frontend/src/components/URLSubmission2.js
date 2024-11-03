@@ -40,12 +40,35 @@ const URLSubmissionTable2 = () => {
     localStorage.setItem('urlList', JSON.stringify(updatedList)); // Update localStorage
   };
 
-  const handleSubmit = () => {
-    if (urlList.length > 0) {
-      console.log('Submitted URLs:', urlList);
-      navigate('/chatpage', { state: { urlList } });
-    }
-  };
+  // const handleSubmit = () => {
+  //   if (urlList.length > 0) {
+  //     console.log('Submitted URLs:', urlList);
+  //     navigate('/chatpage', { state: { urlList } });
+  //   }
+  // };
+
+  const handleSubmit = async () => {
+      if (urlList.length > 0) {
+        console.log('Submitted URLs:', urlList);
+
+        const apiResponse = await fetch('http://localhost:8000/api/0/sources', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ "sources": ["https://github.com/topics/nodejs"] }),
+        });
+
+        console.log(apiResponse);
+
+        navigate('/chatpage', { state: { urlList } });
+      }
+    };
+
+  
+
+
+
 
   return (
     <div className="url-submission-container">
