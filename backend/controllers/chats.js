@@ -3,7 +3,7 @@ const chatController = {
         const user = parseInt(req.params.userId);
 
         // TODO: get chats associated with user when integrated with db
-
+        //     test
         res.json({chats: "placeholder for chats"});
     },
 
