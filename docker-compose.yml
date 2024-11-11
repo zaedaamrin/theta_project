@@ -1,4 +1,14 @@
+version: '3'
 services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    volumes:
+      - ./ollama-data:/app/models
+    ports:
+      - "11400:11400"  # Ollama API port
+    restart: always
+
   backend:
     build: ./backend
     volumes:
@@ -7,10 +17,13 @@ services:
       - "8000:8000"
     environment:
       - NODE_ENV=development
+    depends_on:
+      - ollama
+    command: ["node", "index.js"]
+
   frontend:
     build: ./frontend
     volumes:
       - ./frontend:/app
     ports:
       - "3000:3000"
-

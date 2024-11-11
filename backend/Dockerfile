@@ -1,5 +1,4 @@
-# Use a full Node.js image
-FROM node:16
+FROM node:18
 
 # Install necessary dependencies for Playwright
 RUN apt-get update && apt-get install -y \
@@ -20,12 +19,13 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package*.json ./ 
 
-# Install dependencies, including Playwright
+# Install dependencies
 RUN npm install
 
 # Install Playwright browsers
+RUN npx playwright install-deps
 RUN npx playwright install
 
 # Copy the rest of the application code
