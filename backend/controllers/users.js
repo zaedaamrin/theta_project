@@ -1,4 +1,4 @@
-const { connectToDatabase } = require('./database');
+// const { connectToDatabase } = require('./database');
 
 async function getData() {
     try {

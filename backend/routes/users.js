@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { userController } from "../controllers/users.js";
-const { connectToDatabase } = require('../database.js');
+// import { connectToDatabase } = require('../database.js');
 
 const router = new Router();
 

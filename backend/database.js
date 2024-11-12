@@ -1,5 +1,5 @@
 // database.js
-const sql = require('mssql');
+import sql from 'mssql';
 
 // Define your database configuration here
 const config = {
@@ -11,16 +11,32 @@ const config = {
     trustServerCertificate: false, // Set to false for Azure SQL to use proper encryption
   };
 
-// Function to establish a database connection
-async function connectToDatabase() {
-  try {
-    // Establish the connection using the config
-    await sql.connect(config);
-    console.log('Database connection successful');
-  } catch (err) {
-    console.error('Error connecting to the database:', err);
-  }
-}
+// // Function to establish a database connection
+// async function connectToDatabase() {
+//   try {
+//     const poolConnection = await sql.connect(config);
+//     // Establish the connection using the config
+//     // await sql.connect(config);
+//     console.log('Database connection successful');
+//     return poolConnection;
+//   } catch (err) {
+//     console.error('Error connecting to the database:', err);
+//   }
+// }
 
-// Export the config and connection function
-module.exports = { config, connectToDatabase, sql };
+// export const {pool} = connectToDatabase();
+// // Export the config and connection function
+// // module.exports = { config, connectToDatabase, sql };
+
+// Initialize the connection pool
+const poolPromise = sql.connect(config)
+    .then(pool => {
+        console.log('Database connection successful');
+        return pool;
+    })
+    .catch(err => {
+        console.error('Error connecting to the database:', err);
+    });
+
+// Export the connection pool promise
+export { poolPromise as pool };

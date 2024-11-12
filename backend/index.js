@@ -6,7 +6,7 @@ import cors from 'cors';
 // import swaggerSpec from './swagger';
 import swaggerDocument from './openapi.json' assert { type: 'json' };
 
-const { connectToDatabase } = require('./database');
+// import './database';
 
 const PORT = process.env.PORT || 8000;
 

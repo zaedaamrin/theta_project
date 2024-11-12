@@ -1,13 +1,14 @@
-const { config, connectToDatabase, sql } = require('./database');
+// import { config, connectToDatabase, sql } from './database';
+import {pool} from './database.js'
 
 // Function to insert data into the table
 async function getData() {
     try {
-      const pool = await connectToDatabase();
+      const poolConnection = await pool;
   
       // Perform a query
-      const result = await pool.request().query('SELECT * FROM User');
-      
+      const result = await poolConnection.request().query('SELECT * FROM Users');
+      await poolConnection.request().query("INSERT INTO Users(username, password, email) VALUES ('Menghan', '12345', 'mx253@cornell.edu')");
       console.log('Data from your table:', result.recordset);
     } catch (err) {
       console.error('Error querying the database:', err);
