@@ -9,7 +9,7 @@ import swaggerDocument from './openapi.json' assert { type: 'json' };
 const PORT = process.env.PORT || 8000;
 
 const app = express();
-app.use(express.json());
+app.use(express.json());   //create middleware 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // const routersPath = path.join(__dirname, "routes");

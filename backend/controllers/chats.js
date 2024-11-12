@@ -1,12 +1,21 @@
+import {poolConnect, sql} from './db';
 const chatController = {
-    getChats: (req, res) => {
-        const user = parseInt(req.params.userId);
+    //get the list of chats
+    getChats: async (req, res) => {
+        const userId = parseInt(req.params.userId);
+        try{
+            const pool = await poolConnect;
+            const result = await pool.request()
+                                    .input('userId', sql.Int, userId)
+                                    .query('SELECT * FROM Chats WHERE userId = @userId');
+            if(result.recordset.length > 0){
+                res.status(200).json({})
+            }
+        } catch(err){
 
-        // TODO: get chats associated with user when integrated with db
-        //     test
-        res.json({chats: "placeholder for chats"});
+        }
     },
-
+    //create a new chat
     postChat: (req, res) => {
         const user = parseInt(req.params.userId);
 
@@ -15,7 +24,7 @@ const chatController = {
         res.status(201).json({message: "Chat created!"});
     },
 
-    getChat: (req, res) => {
+    getChatHistory: (req, res) => {
         const user = parseInt(req.params.userId);
         const chat = parseInt(req.params.chatId);
 
@@ -24,14 +33,14 @@ const chatController = {
         res.json({message: "placeholder for chat data"});
     },
 
-    deleteChat: (req, res) => {
-        const user = parseInt(req.params.userId);
-        const chat = parseInt(req.params.chatId);
+    // deleteChat: (req, res) => {
+    //     const user = parseInt(req.params.userId);
+    //     const chat = parseInt(req.params.chatId);
 
-        // TODO: delete the chat from user when integrated with db
+    //     // TODO: delete the chat from user when integrated with db
 
-        res.json({message: "Deleted chat!"});
-    },  
+    //     res.json({message: "Deleted chat!"});
+    // },  
     
     postMessage: (req, res) => {
         const user = parseInt(req.params.userId);
