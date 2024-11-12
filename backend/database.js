@@ -3,7 +3,7 @@ const sql = require('mssql');
 
 // Define your database configuration here
 const config = {
-    user: 'zg339@cornell.edu', // Azure SQL username
+    user: 'ZaedaLogin', // Azure SQL username
     password: '946477#Azure', // Azure SQL password
     server: 'thetabest.database.windows.net', // Your server name
     database: 'Theta_memory', // Your database name
