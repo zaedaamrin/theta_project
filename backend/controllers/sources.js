@@ -1,7 +1,4 @@
-import { scrapeUrl, chunkText } from '../helpers/sourcesHelpers.js';
-import { chromium, firefox } from 'playwright';
-
-const OLLAMA_API_URL = process.env.OLLAMA_API_URL || 'http://localhost:11400';
+const { scrapeUrl, generateChunks, generateEmbeddings } = require('../helpers/sourcesHelpers.js');
 
 const sourceController = {
   getSources: (req, res) => {
@@ -13,28 +10,22 @@ const sourceController = {
 
   postSource: async (req, res) => {
     const user = parseInt(req.params.userId);
-    // get url from request body
     const {source} = req.body;
-    const chunks = []
 
-    // scrape the content, newSource 
-    // const newSource = await scrapeUrl(source).then((scrapedData) async => {
-    //   chunks = await chunkText(newSource.rawData)
-    // }
-      
-    // ).then();
+    try {
+      const {title, rawData} = await scrapeUrl(source);
+      const chunks = await generateChunks(rawData);
+      const embeddings = await generateEmbeddings(chunks);
 
-    // chunk the content
-    
-    
+      // TODO: insert a new source into sources table, insert new rows into content table
 
-    // embed the chunks
-    
-    res.status(201).json({status: 'Sources received successfully!', source: newSource});
+      res.status(201).json({status: 'Sources received successfully!', source: {"title": title, "rawData": rawData}});
+    } catch (error) {
+      console.error('Error processing source:', error);
+      res.status(404).json({message: "Could not scrape URL"});
+    }
+
   },
-  // TODO: implement this when db is connected-
-    // save the content and save the embeddings
-    // return a list of data objects for each source
 
   deleteSource: (req, res) => {
     const user = parseInt(req.params.userId);
@@ -46,4 +37,4 @@ const sourceController = {
   }
 }
 
-export { sourceController };
+module.exports = { sourceController };

@@ -17,8 +17,8 @@
   "homepage": "https://github.com/YW-2022/theta_project#readme",
   "devDependencies": {
     "@playwright/test": "^1.48.2",
-    "express": "^4.21.1",
-    "@types/node": "^22.8.6"
+    "@types/node": "^22.8.6",
+    "express": "^4.21.1"
   },
   "dependencies": {
     "express": "^4.21.1"

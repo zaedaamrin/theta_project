@@ -1,52 +1,38 @@
-import express from 'express';
-import path from 'path';
-import fs from 'fs';
-import swaggerUI from 'swagger-ui-express';
-// import swaggerSpec from './swagger';
-import swaggerDocument from './openapi.json' assert { type: 'json' };
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const swaggerUI = require('swagger-ui-express');
+const dotenv = require('dotenv');
+const { client } = require('./openaiClient');
+
+const swaggerDocument = require('./openapi.json');
+
+dotenv.config();
 
 const PORT = process.env.PORT || 8000;
-
 const app = express();
 app.use(express.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-// const routersPath = path.join(__dirname, "routes");
-
-// fs.readdirSync(routersPath).forEach((file) => {
-//   if (file.endsWith(".js")) {
-//     const routerModule = require(path.join(routersPath, file));
-
-//     const router = routerModule.router;
-
-//     app.use(router);
-//   }
-// });
 const routersPath = './routes';
 
-// fs.readdirSync(routersPath).forEach(async (file) => {
-//   if (file.endsWith('.js')) {
-//     const routerModule = await import(path.join(routersPath, file));
-//     const router = routerModule.default || routerModule.router;
-    
-//     app.use(router);
-//   }
-// });
 async function loadRouters() {
-  const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js'));
+  try {
+    const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js'));
 
-  await Promise.all(files.map(async (file) => {
-    const routerModule = await import(path.resolve(routersPath, file));
-    const router = routerModule.default || routerModule.router;
-    app.use(router);
-  }));
+    // Dynamically require each router file
+    files.forEach((file) => {
+      const routerModule = require(path.resolve(routersPath, file));
+      const router = routerModule.default || routerModule.router;
+      app.use(router);
+    });
+  } catch (err) {
+    console.error('Error loading routers:', err);
+  }
 }
 
 loadRouters().catch(err => console.error('Error loading routers:', err));
 
-// const router = new Router();
-
-// // Testing our server:
 app.get('/api', (req, res) => {
   res.send('Welcome to Smart Memory!');
 });
@@ -55,6 +41,26 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Test route works!' });
 });
 
+app.get('/api/client', async (req, res) => {
+  try {
+    const result = await client.chat.completions.create({
+          messages: [
+            { role: "system", content: "You are a helpful assistant. You will talk professionally." },
+            { role: "user", content: "What is a RAG pattern ?" },
+           ],
+          model: "",
+        });
+      
+        for (const choice of result.choices) {
+          console.log(choice.message);
+        }
+      res.json({message: result})
+    } catch (error) {
+      console.error("Error testing OpenAI client:", error);
+      res.json({message: error})
+    }
+
+})
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

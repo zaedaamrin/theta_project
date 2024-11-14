@@ -1,7 +1,7 @@
-import playwright from '@playwright/test';
-import { chromium, firefox } from 'playwright';
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { Document } from "langchain/document";
+const { chromium, firefox } = require('playwright');
+const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
+const { Document } = require("langchain/document");
+const { embeddingModel } = require('../embeddingModel.js');
 
 async function scrapeUrl(url) {
     const browser = await chromium.launch({
@@ -12,16 +12,15 @@ async function scrapeUrl(url) {
       await page.goto(url);
       const title = await page.title();
       const paragraphs = await page.$$eval('p', elements => elements.map(el => el.innerText)); // Scrape text from all <p> tags
-      console.log(title);
       const source = {"title": title, "rawData": paragraphs}; 
-      await browser.close(); // Ensure the browser is closed after scraping
+      await browser.close(); 
+      console.log("Scraping complete")
       return source;
 }
 
-async function chunkText(text) {
-  // console.log(text);
+async function generateChunks(text) {
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 500,
+    chunkSize: 800,
     chunkOverlap: 0,
   });
   
@@ -29,7 +28,29 @@ async function chunkText(text) {
     new Document({ pageContent: text }),
   ]);
 
-  return docOutput
+  const chunkArray = docOutput.map(chunk => chunk.pageContent)
+
+  console.log("Chunking complete")
+  return chunkArray
 }
 
-export { scrapeUrl, chunkText };
+async function generateEmbeddings(chunks) {
+  try {
+    // Sending multiple chunks in a single request for efficiency
+    const response = await embeddingModel.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: chunks,
+    });
+
+    const embeddings = response.data.map(item => item.embedding);
+    // Uncomment to check embeddings: console.log("Generated embeddings:", embeddings);
+
+    console.log("Embedding complete")
+    return embeddings;
+  } catch (error) {
+    console.error("Error generating embeddings:", error.message);
+    throw error;
+  }
+}
+
+module.exports = { scrapeUrl, generateChunks, generateEmbeddings };
