@@ -34,6 +34,10 @@ const userController = {
 
         res.json({ users: "placeholder for user data"});
     }
+    
+
 }
+
+
 
 export { userController };

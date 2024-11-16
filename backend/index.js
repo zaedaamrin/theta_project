@@ -4,11 +4,19 @@ import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
 // import swaggerSpec from './swagger';
-import swaggerDocument from './openapi.json' assert { type: 'json' };
+//import swaggerDocument from './openapi.json'
 
 // import './database';
 
 const PORT = process.env.PORT || 8000;
+
+
+import {readFile} from 'fs/promises'
+const swaggerDocument = JSON.parse(
+  await readFile(
+    new URL('./openapi.json', import.meta.url)
+  )
+)
 
 const app = express();
 app.use(express.json());

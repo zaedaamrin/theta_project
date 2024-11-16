@@ -9,4 +9,7 @@ router.post('/api/users', userController.postUser);
 
 router.get('/api/users/:userId', userController.getUser);
 
+
+router.post('/api/signin') 
+
 export { router };

@@ -1,5 +1,5 @@
 # Use a full Node.js image
-FROM node:16
+FROM node:18-bullseye
 
 # Install necessary dependencies for Playwright
 RUN apt-get update && apt-get install -y \
