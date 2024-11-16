@@ -1,6 +1,6 @@
 // Import the database connection pool from db.js
-import poolConnect from './db.js';
-import bcrypt from 'bcrypt';   //
+import {pool} from '../database.js';
+import bcrypt from 'bcrypt';   
 const userController = {
     // getUsers: (req, res) => {
     //     // TODO: implement when connected with db
@@ -16,9 +16,9 @@ const userController = {
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
             // Wait for the database connection to be established
-            const pool = await poolConnect;
+            const poolConnection = await pool;
             // Insert a new record into the "Users" table with the provided username and password
-            await pool.request()
+            await poolConnection.request()
                 .input('username', sql.NVarChar, username) // Set the username as a parameter
                 .input('password', sql.NVarChar, hashedPassword) // Set the password as a parameter
                 .input('email', sql.NVarChar, email)
@@ -35,8 +35,8 @@ const userController = {
     signInUser: async (req, res) =>{
         const { email, password } = req.body;
         try {
-            const pool = await poolConnect;
-            const result = await pool.request()
+            const poolConnection = await pool;
+            const result = await poolConnection.request()
                 .input('email', sql.NVarChar, email)
                 .query('SELECT * FROM Users WHERE email = @email');
             if (result.recordset.length > 0) {

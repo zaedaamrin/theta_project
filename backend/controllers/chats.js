@@ -1,11 +1,11 @@
-import {poolConnect, sql} from './db';
+import {pool} from '../database.js';
 const chatController = {
     //get the list of chats
     getChats: async (req, res) => {
         const userId = parseInt(req.params.userId);
         try{
-            const pool = await poolConnect;
-            const result = await pool.request()
+            const poolConnection = await pool;
+            const result = await poolConnection.request()
                                     .input('userId', sql.Int, userId)
                                     .query('SELECT * FROM Chats WHERE userId = @userId');
             if(result.recordset.length > 0){

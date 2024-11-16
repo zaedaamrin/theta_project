@@ -1,4 +1,4 @@
-import { poolConnect, sql } from './db';
+import { pool} from '../database.js';
 import { scrapeUrl } from '../helpers/sourcesHelpers.js';
 import { chromium, firefox } from 'playwright';
 
@@ -6,8 +6,8 @@ const sourceController = {
   getSources: async (req, res) => {
     const userId = parseInt(req.params.userId);
     try{
-      const pool = await poolConnect;
-      const result = await pool.request()
+      const poolConnection = await pool;
+      const result = await poolConnection.request()
                               .input('userId', sql.Int, userId)
           .query('SELECT s.SourceId, s.URL, s.saveDate, s.rawData, us.userSourceId, us.title, us.tags FROM Sources s, userSource us WHERE s.SourceId = us.sourceId AND us.userId = @userId');
       if(result.recordset.length >0){
@@ -33,15 +33,15 @@ const sourceController = {
       // TODO: chunk the content
       // TODO: embed the chunks
       // TODO: save the embeddings
-      const pool = await poolConnect;
+      const poolConnection = await pool;
       const tags = "1";   // ToDo: tag the data
       const scrapeData = await scrapeUrl(url);
       const rawData = scrapeData.pageContent;
-      const insertSourceResult = await pool.request().input('URL', sql.NVarChar, url)
+      const insertSourceResult = await poolConnection.request().input('URL', sql.NVarChar, url)
                           // .input('tags', sql.NVarChar, tags)
                           .input('rawData', sql.NVarChar, rawData)
                           .query('INSERT INTO Sources(URL, saveDate, rawData) VALUES (@URL, GETDATE(), @rawData)')
-      await pool.request().input('userId', sql.Int, userId)
+      await poolConnection.request().input('userId', sql.Int, userId)
                           .input('sourceId', sql.Int, insertSourceResult.recordset[0].sourceId)
                           .input('title', sql.NVarChar, urlName)
                           .input('tags', sql.NVarChar, tags)
@@ -62,8 +62,8 @@ const sourceController = {
     const user = parseInt(req.params.userId);
     const sourceId = parseInt(req.params.sourceId);
     try{
-      const pool = await poolConnect;
-      const result = await pool.request()
+      const poolConnection = await pool;
+      const result = await poolConnection.request()
                               .input('id', sql.Int, sourceId)
                               .query('DELETE FROM Sources where id = @id');
 

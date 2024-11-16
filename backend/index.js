@@ -4,8 +4,8 @@ import fs from 'fs';
 import swaggerUI from 'swagger-ui-express';
 import cors from 'cors';
 // import swaggerSpec from './swagger';
-import swaggerDocument from './openapi.json' assert { type: 'json' };
-
+// import swaggerDocument from './openapi.json' assert { type: 'json' };
+const swaggerDocument = JSON.parse(fs.readFileSync('./openapi.json', 'utf8'));
 // import './database';
 
 const PORT = process.env.PORT || 8000;
