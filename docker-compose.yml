@@ -1,3 +1,4 @@
+version: '3'
 services:
   backend:
     build: ./backend
@@ -5,12 +6,28 @@ services:
       - ./backend:/app
     ports:
       - "8000:8000"
-    environment:
-      - NODE_ENV=development
+    networks:
+      - app-network
+
   frontend:
     build: ./frontend
     volumes:
       - ./frontend:/app
     ports:
       - "3000:3000"
+    networks:
+      - app-network
 
+#   database:
+#     image: mcr.microsoft.com/mssql/server:2022-latest
+#     environment:
+#       - ACCEPT_EULA=Y
+#       - SA_PASSWORD=thetaDB123!
+#     ports:
+#       - "1433:1433"
+#     networks:
+#       - app-network
+
+networks:
+  app-network:
+    driver: bridge
