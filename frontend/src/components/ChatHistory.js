@@ -22,8 +22,8 @@ const ChatHistory = () => {
         <button 
           className="action-button"
           style={{
-            backgroundColor: 'white',
-            color: 'black',
+            backgroundColor: 'black',
+            color: 'white',
             fontWeight: 'bold',
             borderRadius: '20px',
             border: 'none',

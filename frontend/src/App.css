@@ -7,9 +7,9 @@ body, html {
 
 .nav {
   top: 0;
-  padding: 20px 40px;
+  padding: 15px 25px;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   text-align: left;
   margin: 0 auto;
@@ -28,12 +28,19 @@ body, html {
   margin-left: 10px;
 }
 
+.nav img {
+  width: 35px; /* Adjust logo size */
+  height: 35px;
+  /* margin-right: 5px; */
+  cursor: pointer;
+}
+
 .welcome-login-button  {
   background-color: white;
   color: black;
   border: 1px solid white;
   padding: 10px 20px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
@@ -52,7 +59,7 @@ body, html {
   color: white;
   border: 1px solid white;
   padding: 10px 20px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   border-radius: 20px;
   cursor: pointer;
@@ -73,7 +80,7 @@ body, html {
 }
 
 .intro-container p {
-  font-size: 16px;
+  font-size: 24px;
   margin-bottom: 40px;
   color: white;
 }
@@ -162,7 +169,7 @@ body, html {
   background-color: #000;
   color: white;
   border: none;
-  padding: 14px 40px;
+  padding: 10px 30px;
   border-radius: 30px;
   font-size: 16px;
   cursor: pointer;
@@ -263,7 +270,7 @@ body, html {
 .feature p {
   color: white;
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .personal-home {
@@ -322,11 +329,11 @@ body, html {
 }
 
 .action-button {
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   border: none;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: 20px;
   cursor: pointer;
   display: block;
@@ -350,7 +357,7 @@ body, html {
 
 .registration-container {
   width: 100%;
-  padding: 0 40px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -370,7 +377,7 @@ body, html {
 .registration-box h2 {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 24px;
+  margin-bottom: 30px;
   color: #333333;
 }
 
@@ -388,7 +395,7 @@ body, html {
   background-color: #000;
   color: white;
   border: none;
-  padding: 14px 40px;
+  padding: 10px 30px;
   border-radius: 30px;
   font-size: 16px;
   cursor: pointer;
@@ -533,8 +540,8 @@ body, html {
   position: absolute;
   top: 15px; 
   right: 15px; 
-  width: 40px; 
-  height: 40px;
+  width: 35px; 
+  height: 35px;
   background-color: white; 
   border-radius: 50%; 
   padding: 2px; 
@@ -654,7 +661,7 @@ body, html {
   width: 250px;
   background-color: #222;
   color: white;
-  padding: 10px;
+  padding: 25px 15px 15px 25px;
   display: flex;
   flex-direction: column;
 }
@@ -669,17 +676,17 @@ body, html {
 
 .sidebar-header h2 {
   margin: 0; /* Remove any default margin */
-  font-size: 18px; /* Adjust font size if necessary */
+  font-size: 20px; /* Adjust font size if necessary */
 }
 
 .plus{
   background-color: #444;
   border: none;
-  padding: 5px;
+  padding: 10px;
   color: white;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 30px;
   height: 30px;
   width: 30px;
   display: flex;
@@ -703,6 +710,8 @@ body, html {
 
 .total-sources {
   margin-top: auto;
+  font-weight:bold;
+  margin-bottom: 20px;
 }
 
 .chat-area {
@@ -733,18 +742,21 @@ body, html {
   margin-bottom: 10px;
   color: #333;
   word-wrap: break-word;
+  font-size:18px;
 }
 
 .bot-message {
   align-self: flex-start;
   background-color: white;
   border-radius: 10px 10px 10px 0;
+  font-size:18px;
 }
 
 .user-message {
   align-self: flex-end;
   background-color: white;
   border-radius: 10px 10px 0 10px;
+  font-size:18px;
 }
 
 .chat-input-container {
@@ -760,11 +772,12 @@ body, html {
 .chat-input-field {
   flex: 1;
   padding: 10px;
-  border-radius: 20px;
+  border-radius: 16px;
   border: none;
   outline: none;
   background-color: white;
   color: #333;
+  font-size: 18px;
 }
 
 .send-button {

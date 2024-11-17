@@ -55,15 +55,15 @@ const RegistrationPage = () => {
     <div className="Registrationpage">
       <Nav />
       <div className="registration-container">
-        <h1>Smart Memory</h1>
+        <h1>Register to Start Chats</h1>
+
         <div className="registration-box">
-          <h2>Account Registration</h2>
 
           <form autoComplete="off" onSubmit={handleSubmit}>
             <InputField 
               label="Create your username" 
               type="text" 
-              placeholder="enter username" 
+              placeholder="Enter username" 
               autoComplete="off" 
               value={username} 
               onChange={(e) => setUsername(e.target.value)} 
@@ -71,7 +71,7 @@ const RegistrationPage = () => {
             <InputField 
               label="Enter your email address" 
               type="email" 
-              placeholder="your email address" 
+              placeholder="Enter email address" 
               autoComplete="off" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
@@ -79,7 +79,7 @@ const RegistrationPage = () => {
             <InputField 
               label="Create your password" 
               type="password" 
-              placeholder="enter password" 
+              placeholder="Enter password" 
               autoComplete="off" 
               value={password} 
               onChange={(e) => setPassword(e.target.value)} 
@@ -87,7 +87,7 @@ const RegistrationPage = () => {
             <InputField 
               label="Confirm your password" 
               type="password" 
-              placeholder="confirm password" 
+              placeholder="Confirm password" 
               autoComplete="off" 
               value={confirmPassword} 
               onChange={(e) => setConfirmPassword(e.target.value)} 

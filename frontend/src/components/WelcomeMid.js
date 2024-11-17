@@ -18,7 +18,7 @@ const WelcomeMid = () => {
     <div className="intro-container">
       <div className="intro-content">
       <h2>My Smart Memory</h2>
-      <p>My Smart Memory is a personal assistant that saves and interacts with web content efficiently. </p>
+      <p>A personal assistant that saves and interacts with web content efficiently. </p>
         <div className="intro-features">
           <div className="feature">
             <div style={{
@@ -33,7 +33,7 @@ const WelcomeMid = () => {
             }}>
               <img src={navIcon} alt="Library Icon" style={{ width: '58%' }} />
             </div>
-            <p style={{ fontWeight: 'bold' }}>Your personal content library</p>
+            <p style={{ fontWeight: 'bold' }}>Personal Content Library</p>
             <p>Save and store important web content easily.</p>
           </div>
           
@@ -50,7 +50,7 @@ const WelcomeMid = () => {
             }}>
               <img src={bookIcon} alt="Search Icon" style={{ width: '60%' }} />
             </div>
-            <p style={{ fontWeight: 'bold' }}>Instant search results</p>
+            <p style={{ fontWeight: 'bold' }}>Instant Search Results</p>
             <p>Quickly find answers within your saved content.</p>
           </div>
           
@@ -67,7 +67,7 @@ const WelcomeMid = () => {
             }}>
               <img src={chatIcon} alt="Assistant Icon" style={{ width: '65%', marginTop:'10px'}} />
             </div>
-            <p style={{ fontWeight: 'bold' }}>Tailored personal assistant</p>
+            <p style={{ fontWeight: 'bold' }}>Tailored Personal Assistant</p>
             <p>Get customized answers based on your preferences.</p>
           </div>
         </div>
