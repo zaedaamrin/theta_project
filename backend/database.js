@@ -1,5 +1,5 @@
 // database.js
-import sql from 'mssql';
+const sql = require('mssql');
 
 // Define your database configuration here
 const config = {
@@ -39,4 +39,4 @@ const poolPromise = sql.connect(config)
     });
 
 // Export the connection pool promise
-export { poolPromise as pool };
+module.exports = { pool: poolPromise };

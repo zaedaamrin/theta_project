@@ -91,16 +91,13 @@
 // });
 
 
-import express from 'express';
-import path from 'path';
-import fs from 'fs';
-import swaggerUI from 'swagger-ui-express';
-import cors from 'cors';
-// import swaggerSpec from './swagger';
-// import swaggerDocument from './openapi.json' assert { type: 'json' };
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = JSON.parse(fs.readFileSync('./openapi.json', 'utf8'));
-// import './database';
-import { router as userRouter } from './routes/users.js';
+const cors = require('cors');
+const { router: userRouter } = require('./routes/users');
 
 const PORT = process.env.PORT || 8000;
 
@@ -122,12 +119,14 @@ app.use(userRouter);
 // Dynamically load additional routers
 const routersPath = './routes';
 async function loadRouters() {
+  // Read all files in the routes directory
   const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js') && file !== 'chats.js');
 
+  // Load each router dynamically using `require`
   await Promise.all(files.map(async (file) => {
     try {
-      const routerModule = await import(path.resolve(routersPath, file));
-      const router = routerModule.default || routerModule.router;
+      const routerModule = require(path.resolve(routersPath, file));
+      const router = routerModule.router || routerModule.default || routerModule;
       app.use(router);
       console.log(`Loaded router from ${file}`);
     } catch (err) {
@@ -136,6 +135,7 @@ async function loadRouters() {
   }));
 }
 
+// Call the function to load routers
 loadRouters()
   .then(() => {
     console.log('All routers loaded successfully!');

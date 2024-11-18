@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { chatController } from '../controllers/chats.js';
+const { Router } = require('express');
+const { chatController } = require('../controllers/chats.js');
 
 const router = new Router();
 
@@ -11,4 +11,4 @@ router.delete('/api/:userId/chats/:chatId', chatController.deleteChat);
 
 router.post('/api/:userId/chats/:chatId/message', chatController.postMessage);
 
-export { router };
+module.exports = { router };

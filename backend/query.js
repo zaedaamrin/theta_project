@@ -1,5 +1,4 @@
-// import { config, connectToDatabase, sql } from './database';
-import {pool} from './database.js'
+const {pool} = require('./database.js');
 
 // Function to insert data into the table
 async function getData() {

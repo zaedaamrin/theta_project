@@ -1,6 +1,6 @@
-import { pool} from '../database.js';
-import { scrapeUrl } from '../helpers/sourcesHelpers.js';
-import { chromium, firefox } from 'playwright';
+const { pool} = require('../database.js');
+const { scrapeUrl } = require('../helpers/sourcesHelpers.js');
+const sql = require('mssql');
 
 const sourceController = {
   getSources: async (req, res) => {
@@ -82,4 +82,4 @@ const sourceController = {
   }
 }
 
-export { sourceController };
+module.exports = { sourceController };

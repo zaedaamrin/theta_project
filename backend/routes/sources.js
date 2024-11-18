@@ -1,5 +1,5 @@
-import { Router } from 'express';
-import { sourceController } from "../controllers/sources.js";
+const { Router } = require('express');
+const { sourceController } = require("../controllers/sources.js");
 
 const router = new Router();
 
@@ -8,4 +8,4 @@ router.post('/api/:userId/sources', sourceController.postSource);
 
 router.delete('/api/:userId/sources/:sourceId', sourceController.deleteSource);
 
-export { router };
+module.exports = { router };

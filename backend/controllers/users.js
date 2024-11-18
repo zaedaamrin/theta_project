@@ -1,7 +1,7 @@
-// Import the database connection pool from db.js
-import {pool} from '../database.js';
-import bcrypt from 'bcrypt';   
-import sql from 'mssql';
+// const the database connection pool from db.js
+const {pool} = require('../database.js');
+const bcrypt = require('bcrypt');   
+const sql = require('mssql');
 
 const userController = {
     // getUsers: (req, res) => {
@@ -86,4 +86,4 @@ const userController = {
 
 };
 
-export { userController };
+module.exports = { userController };

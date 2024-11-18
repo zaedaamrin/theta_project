@@ -1,4 +1,4 @@
-import {pool} from '../database.js';
+const {pool} = require('../database.js');
 const chatController = {
     //get the list of chats
     getChats: async (req, res) => {
@@ -55,4 +55,4 @@ const chatController = {
     }
 }
 
-export { chatController };
+module.exports = { chatController };

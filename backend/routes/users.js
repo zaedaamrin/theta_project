@@ -1,6 +1,5 @@
-import { Router } from 'express';
-import { userController } from "../controllers/users.js";
-// import { connectToDatabase } = require('../database.js');
+const { Router } = require('express');
+const { userController } = require("../controllers/users.js");
 
 const router = new Router();
 
@@ -11,5 +10,5 @@ const router = new Router();
 
 router.post('/api/users/signin', userController.signInUser);
 router.post('/api/users/signup', userController.signUpUser);
-export { router }; 
+module.exports = { router }; 
 
