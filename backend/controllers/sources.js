@@ -1,5 +1,5 @@
 const { pool} = require('../database.js');
-const { scrapeUrl } = require('../helpers/sourcesHelpers.js');
+const { scrapeUrl, generateChunks, generateEmbeddings } = require('../helpers/sourcesHelpers.js');
 const sql = require('mssql');
 
 const sourceController = {
@@ -22,21 +22,19 @@ const sourceController = {
   },
 
   //save urls' raw data in sources table 
-  //TODO: chunk content and store them into content table
   postSource: async (req, res) => {
+    console.log("start post request")
     const userId = parseInt(req.params.userId);
-    // get url list from request body
     const {urlName, url} = req.body;  //TODO: personalize urlName or generate by AI or webscraping title, for now I use personlized urlName
     
-    const newSources = []
     try{
-      // TODO: chunk the content
-      // TODO: embed the chunks
-      // TODO: save the embeddings
       const poolConnection = await pool;
       const tags = "1";   // ToDo: tag the data
-      const scrapeData = await scrapeUrl(url);
-      const rawData = scrapeData.pageContent;
+
+      const {title, rawData} = await scrapeUrl(url);
+      const chunks = await generateChunks(rawData);
+      const embeddings = await generateEmbeddings(chunks);
+
       const insertSourceResult = await poolConnection.request().input('URL', sql.NVarChar, url)
                           // .input('tags', sql.NVarChar, tags)
                           .input('rawData', sql.NVarChar, rawData)
@@ -46,8 +44,8 @@ const sourceController = {
                           .input('title', sql.NVarChar, urlName)
                           .input('tags', sql.NVarChar, tags)
                           .query('INSERT INTO UserSource(userId, sourceId, title, tags) VALUES (@userId, @sourceId, @title, @tags)');
-      newSources.push(scrapeData);
-      res.status(201).json({status: 'Sources received and scraped successfully!', sources: newSources});
+      
+      res.status(201).json({status: 'Sources received and scraped successfully!', sources: {"title": title, "rawData": rawData}});
     } catch (err) {
       console.error('Error handling sources', err);
       res.status(500).json({error:'Error processing sources'});

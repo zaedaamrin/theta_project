@@ -99,6 +99,11 @@ const swaggerDocument = JSON.parse(fs.readFileSync('./openapi.json', 'utf8'));
 const cors = require('cors');
 const { router: userRouter } = require('./routes/users');
 
+const dotenv = require('dotenv');
+const { client } = require('./models/completionsClient');
+
+dotenv.config();
+
 const PORT = process.env.PORT || 8000;
 
 const app = express();
@@ -118,29 +123,23 @@ app.use(userRouter);
 
 // Dynamically load additional routers
 const routersPath = './routes';
-async function loadRouters() {
-  // Read all files in the routes directory
-  const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js') && file !== 'chats.js');
 
-  // Load each router dynamically using `require`
-  await Promise.all(files.map(async (file) => {
-    try {
+async function loadRouters() {
+  try {
+    const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js'));
+
+    // Dynamically require each router file
+    files.forEach((file) => {
       const routerModule = require(path.resolve(routersPath, file));
-      const router = routerModule.router || routerModule.default || routerModule;
+      const router = routerModule.default || routerModule.router;
       app.use(router);
-      console.log(`Loaded router from ${file}`);
-    } catch (err) {
-      console.error(`Error loading router from ${file}:`, err.message);
-    }
-  }));
+    });
+  } catch (err) {
+    console.error('Error loading routers:', err);
+  }
 }
 
-// Call the function to load routers
-loadRouters()
-  .then(() => {
-    console.log('All routers loaded successfully!');
-  })
-  .catch(err => console.error('Error loading routers:', err));
+loadRouters().catch(err => console.error('Error loading routers:', err));
 
 // Test routes
 app.get('/api', (req, res) => {
@@ -150,6 +149,29 @@ app.get('/api', (req, res) => {
 app.get('/api/test', (req, res) => {
   res.json({ message: 'Test route works!' });
 });
+
+app.get('/api/client', async (req, res) => {
+  try {
+    const result = await client.chat.completions.create({
+          messages: [
+            { role: "system", content: "You are a helpful assistant. You will talk professionally." },
+            { role: "user", content: "What is a RAG pattern ?" },
+           ],
+          model: "",
+        });
+      
+        const responseMessages = []
+
+        for (const choice of result.choices) {
+          responseMessages.push(choice.message)
+        }
+      res.json({response: responseMessages[0].content})
+    } catch (error) {
+      console.error("Error testing OpenAI client:", error);
+      res.json({message: error})
+    }
+
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
