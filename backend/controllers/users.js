@@ -1,6 +1,8 @@
 // Import the database connection pool from db.js
 import {pool} from '../database.js';
 import bcrypt from 'bcrypt';   
+import sql from 'mssql';
+
 const userController = {
     // getUsers: (req, res) => {
     //     // TODO: implement when connected with db
