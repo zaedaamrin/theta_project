@@ -1,4 +1,4 @@
-const { client } = require('../models/completionsClient');
+const { client } = require('../models/completionModel');
 
 async function generateResponse(userMessage) {
     try {

@@ -100,7 +100,7 @@ const cors = require('cors');
 const { router: userRouter } = require('./routes/users');
 
 const dotenv = require('dotenv');
-const { client } = require('./models/completionsClient');
+const { client } = require('./models/completionModel');
 
 dotenv.config();
 
