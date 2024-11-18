@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const dotenv = require('dotenv');
-const { client } = require('./openaiClient');
+const { client } = require('./completionsClient');
 
 const swaggerDocument = require('./openapi.json');
 
@@ -51,10 +51,12 @@ app.get('/api/client', async (req, res) => {
           model: "",
         });
       
+        const responseMessages = []
+
         for (const choice of result.choices) {
-          console.log(choice.message);
+          responseMessages.push(choice.message)
         }
-      res.json({message: result})
+      res.json({response: responseMessages[0].content})
     } catch (error) {
       console.error("Error testing OpenAI client:", error);
       res.json({message: error})

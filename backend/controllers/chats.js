@@ -1,3 +1,6 @@
+// const { completionModel } = require('../completionModel.js');
+const { generateResponse } = require('../helpers/ragHelpers.js');
+
 const chatController = {
     getChats: (req, res) => {
         const user = parseInt(req.params.userId);
@@ -33,16 +36,19 @@ const chatController = {
         res.json({message: "Deleted chat!"});
     },  
     
-    postMessage: (req, res) => {
+    postMessage: async (req, res) => {
         const user = parseInt(req.params.userId);
         const chat = parseInt(req.params.chatId);
 
-        // TODO: implement when integrated with db:
-        // post new message to chat associated with user 
-        // RAG pipeline to generate answer
-        // Send answer in res
+        const message = req.body.message
 
-        res.status(201).json({answer: "Placeholder for answer"});
+        try {
+            const result = await generateResponse(message);
+              res.status(201).json({response: result})
+            } catch (error) {
+              console.error("Error getting response from OpenAI client:", error);
+              res.json({message: error})
+            }
     }
 }
 
