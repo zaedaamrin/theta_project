@@ -137,55 +137,6 @@ const sourceController = {
       console.error('Error deleting source:', err);
       res.status(500).json({ error: 'Error deleting source' });
     }
-  },
-
-    // retrieving chunks and performing cosine similarity 
-    getSimilarChunks: async (queryEmbedding) => {
-    try {
-      const poolConnection = await pool;
-  
-      // Retrieve all embeddings from Content table
-      const result = await poolConnection.request()
-        .query('SELECT contentId, contentTextChunk, embedding FROM Content');
-  
-      const contentData = result.recordset.map(record => ({
-        contentId: record.contentId,
-        contentTextChunk: record.contentTextChunk,
-        embedding: JSON.parse(record.embedding.toString()) // Deserialize
-      }));
-  
-      // implement cosine similarity
-      const similarities = contentData.map(content => ({
-        contentId: content.contentId,
-        contentTextChunk: content.contentTextChunk,
-        similarity: calculateCosineSimilarity(queryEmbedding, content.embedding)
-      }));
-  
-      // sort by similarity score (highest first)
-      similarities.sort((a, b) => b.similarity - a.similarity);
-      return similarities.slice(0, 5); // returning top 5 results
-    } catch (err) {
-      console.error('Error retrieving embeddings:', err);
-      return [];
-    }
-  },
-
-  // expose similarity search endpoint
-  searchSimilar: async (req, res) => {
-    const { queryText } = req.body;
-  
-    try {
-      // generate query embedding
-      const queryEmbedding = await generateEmbeddings([queryText]);
-  
-      // retrieve similar chunks
-      const results = await getSimilarChunks(queryEmbedding[0]);
-  
-      res.status(200).json({ results });
-    } catch (err) {
-      console.error('Error performing similarity search:', err);
-      res.status(500).json({ error: 'Error performing similarity search' });
-    }
   }
 }
 

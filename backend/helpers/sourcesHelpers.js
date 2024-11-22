@@ -74,11 +74,4 @@ async function generateEmbeddings(chunks) {
   }
 }
 
-const calculateCosineSimilarity = (vecA, vecB) => {
-  const dotProduct = vecA.reduce((sum, a, idx) => sum + a * vecB[idx], 0);
-  const magnitudeA = Math.sqrt(vecA.reduce((sum, a) => sum + a ** 2, 0));
-  const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b ** 2, 0));
-  return dotProduct / (magnitudeA * magnitudeB);
-};
-
-module.exports = { scrapeUrl, generateChunks, generateEmbeddings, calculateCosineSimilarity };
+module.exports = { scrapeUrl, generateChunks, generateEmbeddings};
