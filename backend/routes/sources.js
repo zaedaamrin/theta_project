@@ -5,7 +5,7 @@ const router = new Router();
 
 router.get('/api/:userId/sources', sourceController.getSources);
 router.post('/api/:userId/sources', sourceController.postSource);
-
 router.delete('/api/:userId/sources/:sourceId', sourceController.deleteSource);
+router.post('/api/sources/searchSimilar', sourceController.searchSimilar);
 
 module.exports = { router };
