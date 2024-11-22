@@ -35,17 +35,17 @@ const sourceController = {
       const chunks = await generateChunks(rawData);
       const embeddings = await generateEmbeddings(chunks);
 
-      const insertSourceResult = await poolConnection.request().input('URL', sql.NVarChar, url)
-                          // .input('tags', sql.NVarChar, tags)
-                          .input('rawData', sql.NVarChar, rawData)
-                          .query('INSERT INTO Sources(URL, saveDate, rawData) VALUES (@URL, GETDATE(), @rawData)')
-      await poolConnection.request().input('userId', sql.Int, userId)
-                          .input('sourceId', sql.Int, insertSourceResult.recordset[0].sourceId)
-                          .input('title', sql.NVarChar, urlName)
-                          .input('tags', sql.NVarChar, tags)
-                          .query('INSERT INTO UserSource(userId, sourceId, title, tags) VALUES (@userId, @sourceId, @title, @tags)');
+      // const insertSourceResult = await poolConnection.request().input('URL', sql.NVarChar, url)
+      //                     // .input('tags', sql.NVarChar, tags)
+      //                     .input('rawData', sql.NVarChar, rawData)
+      //                     .query('INSERT INTO Sources(URL, saveDate, rawData) VALUES (@URL, GETDATE(), @rawData)')
+      // await poolConnection.request().input('userId', sql.Int, userId)
+      //                     .input('sourceId', sql.Int, insertSourceResult.recordset[0].sourceId)
+      //                     .input('title', sql.NVarChar, urlName)
+      //                     .input('tags', sql.NVarChar, tags)
+      //                     .query('INSERT INTO UserSource(userId, sourceId, title, tags) VALUES (@userId, @sourceId, @title, @tags)');
       
-      res.status(201).json({status: 'Sources received and scraped successfully!', sources: {"title": title, "rawData": rawData}});
+      res.status(201).json({status: 'Sources received and scraped successfully!', sources: {"title": title, "url": url}});
     } catch (err) {
       console.error('Error handling sources', err);
       res.status(500).json({error:'Error processing sources'});
