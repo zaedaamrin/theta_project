@@ -1,68 +1,3 @@
-// // components/ChatArea.js
-// import React, { useState } from 'react';
-// import '../App.css';
-
-// const ChatArea = ({ messages, setMessages }) => {
-//   const handleSendMessage = async (e) => {
-//     e.preventDefault();
-//     const inputField = document.getElementById('chat-input');
-//     const messageText = inputField.value.trim();
-//     if (messageText) {
-//       setMessages([...messages, { type: 'user', text: messageText }]);
-
-//       try {
-//         const response = await fetch('http://localhost:8000/api/0/chats/0/message', {
-//           method: 'POST',
-//           headers: {
-//             'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify({ "message": messageText }),
-//         });
-  
-//         if (response.ok) {
-//           console.log("MODEL'S ANSWER:",response.response)
-//         } else {
-//           console.log("error")
-//         }
-//       } catch (err) {
-//         console.log("error")
-//       }
-
-//       inputField.value = ''; // Clear the input field after sending the message
-//     }
-//   };
-
-//   return (
-//     <div className="chat-area">
-//       <div className="chat-messages">
-//         {messages.map((msg, index) => (
-//           <div
-//             key={index}
-//             className={`message ${msg.type === 'user' ? 'user-message' : 'bot-message'}`}
-//           >
-//             {msg.text}
-//           </div>
-//         ))}
-//       </div>
-//       <form className="chat-input-container" onSubmit={handleSendMessage}>
-//         <input
-//           type="text"
-//           id="chat-input"
-//           placeholder="Ask Smart Memory"
-//           className="chat-input-field"
-//         />
-//         <button type="submit" className="send-button">
-//           ➔
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default ChatArea;
-
-// components/ChatArea.js
-
 
 
 import React, { useState } from 'react';
@@ -131,6 +66,7 @@ const ChatArea = ({ messages, setMessages }) => {
           id="chat-input"
           placeholder="Ask Smart Memory"
           className="chat-input-field"
+          autoComplete='off'
         />
         <button type="submit" className="send-button">
           ➔

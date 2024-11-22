@@ -51,24 +51,25 @@ const URLSubmissionTable2 = () => {
       if (urlList.length > 0) {
         console.log('Submitted URLs:', urlList);
 
-        const apiResponse = await fetch('http://localhost:8000/api/0/sources', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ "sources": ["https://github.com/topics/nodejs"] }),
-        });
-
-        console.log(apiResponse);
+        urlList.forEach(async (url) => {
+          console.log("Post this source: ", url.url)
+          const apiResponse = await fetch('http://localhost:8000/api/0/sources', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "urlName": url.name, "url": url.url }),
+          });
+  
+          console.log(apiResponse);
+        })
+        
 
         navigate('/chatpage', { state: { urlList } });
       }
     };
 
   
-
-
-
 
   return (
     <div className="url-submission-container">
