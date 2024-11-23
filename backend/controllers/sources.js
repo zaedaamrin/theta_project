@@ -8,7 +8,6 @@ const sourceController = {
         if (isNaN(userId) || userId <= 0) {
             return res.status(400).json({ error: 'Invalid userId provided.' });
         }
-
         try {
             const poolConnection = await pool;
             const result = await poolConnection.request()
@@ -22,10 +21,8 @@ const sourceController = {
                         us.userSourceId, 
                         us.title, 
                         us.tags 
-                    FROM Sources s
-                    INNER JOIN UserSource us ON s.sourceId = us.sourceId
-                    WHERE us.userId = @userId
-                    ORDER BY s.saveDate DESC
+                    FROM Sources s, UserSource us
+                    WHERE s.sourceId = us.sourceId AND us.userId = @userId 
                 `);
 
             if (result.recordset.length > 0) {
@@ -66,8 +63,11 @@ const sourceController = {
             }
 
             const { title, rawData } = await scrapeUrl(url);
+            console.log('Scraped URL:', { title, rawData });
             const chunks = await generateChunks(rawData);
+            console.log('Generated chunks:', chunks[0]);
             const embeddings = await generateEmbeddings(chunks);
+            console.log('Generated chunks:', embeddings[0]);
 
             const insertSourceResult = await poolConnection.request()
                 .input('URL', sql.NVarChar, url)
@@ -89,7 +89,29 @@ const sourceController = {
                     INSERT INTO UserSource (userId, sourceId, title, tags)
                     VALUES (@userId, @sourceId, @title, @tags)
                 `);
+            // Insert chunks and embeddings into Content table
+        for (let i = 0; i < chunks.length; i++) {
+          const chunk = chunks[i];
+          const embedding = embeddings[i];
 
+          if (!embedding || embedding.length === 0) {
+              console.error(`Skipping invalid embedding for chunk ${i + 1}`);
+              continue;
+          }
+
+          const serializedEmbedding = Buffer.from(JSON.stringify(embedding));
+          console.log(`Inserting chunk ${i + 1} with embedding size: ${serializedEmbedding.length}`);
+
+          await poolConnection.request()
+              .input('sourceId', sql.Int, sourceId)
+              .input('chunkOrder', sql.Int, i + 1)
+              .input('contentTextChunk', sql.NVarChar, chunk)
+              .input('embedding', sql.VarBinary, serializedEmbedding)
+              .query(`
+                  INSERT INTO Content (sourceId, chunkOrder, contentTextChunk, embedding, embeddingDate)
+                  VALUES (@sourceId, @chunkOrder, @contentTextChunk, @embedding, GETDATE())
+              `);
+      }
             res.status(201).json({ message: 'Source added successfully!' });
             console.log("sources added");
         } catch (err) {
