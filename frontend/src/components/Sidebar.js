@@ -2,22 +2,38 @@ import React, { useEffect, useState } from 'react';
 
 const Sidebar = ({ onOpenModal }) => {
   const [urlList, setUrlList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Load URLs from localStorage and listen for updates
+  // Load URLs from the backend when the component mounts
   useEffect(() => {
-    const savedUrls = JSON.parse(localStorage.getItem('urlList')) || [];
-    setUrlList(savedUrls);
+    const fetchUrls = async () => {
+      try {
+        const userId = localStorage.getItem('userId'); // Retrieve userId from local storage
+        if (!userId) {
+          console.error('User ID not found. Please log in again.');
+          setError('User ID not found. Please log in again.');
+          setLoading(false);
+          return;
+        }
 
-    // Listen for storage changes to sync Sidebar
-    const handleStorageChange = () => {
-      const updatedUrls = JSON.parse(localStorage.getItem('urlList')) || [];
-      setUrlList(updatedUrls);
+        const response = await fetch(`http://localhost:8000/api/${userId}/sources`);
+        if (response.ok) {
+          const data = await response.json();
+          setUrlList(data.sources); // Set the sources fetched from the backend
+        } else {
+          console.error('Failed to fetch sources:', response.status, response.statusText);
+          setError('Failed to fetch sources.');
+        }
+      } catch (err) {
+        console.error('Error fetching sources:', err);
+        setError('An error occurred while fetching sources.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    fetchUrls();
   }, []);
 
   return (
@@ -27,13 +43,21 @@ const Sidebar = ({ onOpenModal }) => {
         <button className="plus" onClick={onOpenModal}>+</button>
       </div>
       <div className="source-list">
-        {urlList.map((item, index) => (
-          <div key={index} className="source-item">
-            <a href={item.url} target="_blank" rel="noopener noreferrer">
-              {item.name}
-            </a>
-          </div>
-        ))}
+        {loading ? (
+          <p>Loading sources...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>{error}</p>
+        ) : urlList.length > 0 ? (
+          urlList.map((item, index) => (
+            <div key={index} className="source-item">
+              <a href={item.URL} target="_blank" rel="noopener noreferrer">
+                {item.title || item.URL} {/* Display title if available, otherwise URL */}
+              </a>
+            </div>
+          ))
+        ) : (
+          <p>No sources available.</p>
+        )}
       </div>
       <div className="total-sources">Total Sources: {urlList.length}</div>
     </div>
