@@ -43,19 +43,26 @@ const sourceController = {
         console.log("Start POST request");
         const userId = parseInt(req.params.userId);
         const { urlName, url } = req.body;
+        console.log(urlName);
+        console.log(url);
 
         if (!url || !urlName) {
             return res.status(400).json({ error: 'URL and URL Name are required.' });
+            console.log("400");
         }
 
         try {
+            console.log("start!");
             const poolConnection = await pool;
+            console.log(userId);
             const userCheckResult = await poolConnection.request()
                 .input('userId', sql.Int, userId)
                 .query('SELECT 1 FROM Users WHERE userId = @userId');
+            console.log(userCheckResult);
 
             if (userCheckResult.recordset.length === 0) {
                 return res.status(400).json({ error: `Invalid userId: ${userId}` });
+                console.log("400_2");
             }
 
             const { title, rawData } = await scrapeUrl(url);
@@ -72,7 +79,7 @@ const sourceController = {
                 `);
 
             const sourceId = insertSourceResult.recordset[0]?.sourceId;
-
+            console.log("insertSources");
             await poolConnection.request()
                 .input('userId', sql.Int, userId)
                 .input('sourceId', sql.Int, sourceId)
@@ -84,9 +91,11 @@ const sourceController = {
                 `);
 
             res.status(201).json({ message: 'Source added successfully!' });
+            console.log("sources added");
         } catch (err) {
             console.error('Error in postSource:', err);
             res.status(500).json({ error: 'Internal server error while adding source.' });
+            console.log("500");
         }
     },
 
