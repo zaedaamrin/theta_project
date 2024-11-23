@@ -1,143 +1,119 @@
-const { pool} = require('../database.js');
+const { pool } = require('../database.js');
 const { scrapeUrl, generateChunks, generateEmbeddings } = require('../helpers/sourcesHelpers.js');
 const sql = require('mssql');
 
 const sourceController = {
-  getSources: async (req, res) => {
-    const userId = parseInt(req.params.userId);
-    try{
-      const poolConnection = await pool;
-      const result = await poolConnection.request()
-                              .input('userId', sql.Int, userId)
-          .query('SELECT s.sourceId, s.URL, s.saveDate, s.rawData, us.userSourceId, us.title, us.tags FROM Sources s, UserSource us WHERE s.sourceId = us.sourceId AND us.userId = @userId');
-      if(result.recordset.length >0){
-        res.status(200).json({ sources: result.recordset[0]});  // 返回所有找到的记录
-      } else {
-        res.status(404).json({ message: 'No sources found for this user' });
-      }
-    } catch(err){
-      console.error('Error fetching sources:', err);
-      res.status(500).json({ error: 'Error fetching sources' });
-    }
-  },
-
-  //save urls' raw data in sources table 
-  postSource: async (req, res) => {
-    console.log("Start POST request");
-    const userId = parseInt(req.params.userId);
-    const { urlName, url } = req.body;
-
-    try {
-        // Validate userId
-        const poolConnection = await pool;
-        const userCheckResult = await poolConnection.request()
-            .input('userId', sql.Int, userId)
-            .query('SELECT 1 FROM Users WHERE userId = @userId');
-
-        if (userCheckResult.recordset.length === 0) {
-            const errorMessage = `Invalid userId: ${userId}. The user does not exist in the system. Please use a valid userId.`;
-            console.error(errorMessage);
-            return res.status(400).json({ error: errorMessage });
+    getSources: async (req, res) => {
+        const userId = parseInt(req.params.userId);
+        if (isNaN(userId) || userId <= 0) {
+            return res.status(400).json({ error: 'Invalid userId provided.' });
         }
+
+        try {
+            const poolConnection = await pool;
+            const result = await poolConnection.request()
+                .input('userId', sql.Int, userId)
+                .query(`
+                    SELECT 
+                        s.sourceId, 
+                        s.URL, 
+                        s.saveDate, 
+                        s.rawData, 
+                        us.userSourceId, 
+                        us.title, 
+                        us.tags 
+                    FROM Sources s
+                    INNER JOIN UserSource us ON s.sourceId = us.sourceId
+                    WHERE us.userId = @userId
+                    ORDER BY s.saveDate DESC
+                `);
+
+            if (result.recordset.length > 0) {
+                res.status(200).json({ sources: result.recordset });
+            } else {
+                res.status(404).json({ message: 'No sources found for this user' });
+            }
+        } catch (err) {
+            console.error(`Error in getSources for userId ${userId}:`, err);
+            res.status(500).json({ error: 'Internal server error while fetching sources.' });
+        }
+    },
+
+    postSource: async (req, res) => {
+        console.log("Start POST request");
+        const userId = parseInt(req.params.userId);
+        const { urlName, url } = req.body;
 
         if (!url || !urlName) {
-            const errorMessage = 'URL and URL Name are required in the request body.';
-            console.error(errorMessage);
-            return res.status(400).json({ error: errorMessage });
+            return res.status(400).json({ error: 'URL and URL Name are required.' });
         }
 
-        const tags = "1"; // Temporary tagging for the source
+        try {
+            const poolConnection = await pool;
+            const userCheckResult = await poolConnection.request()
+                .input('userId', sql.Int, userId)
+                .query('SELECT 1 FROM Users WHERE userId = @userId');
 
-        // Scrape URL
-        const { title, rawData } = await scrapeUrl(url);
-        console.log('Scraped URL:', { title, rawData });
-
-        const chunks = await generateChunks(rawData);
-        console.log('Generated chunks:', chunks[0]);
-
-        const embeddings = await generateEmbeddings(chunks);
-        console.log('Generated chunks:', embeddings[0]);
-
-
-        // Insert into Sources table
-        const insertSourceResult = await poolConnection.request()
-            .input('URL', sql.NVarChar, url)
-            .input('rawData', sql.NVarChar, rawData)
-            .query(`
-                INSERT INTO Sources (URL, saveDate, rawData)
-                OUTPUT inserted.sourceId
-                VALUES (@URL, GETDATE(), @rawData)
-            `);
-
-        const sourceId = insertSourceResult.recordset[0]?.sourceId;
-        if (!sourceId) {
-            throw new Error('Failed to retrieve inserted sourceId');
-        }
-
-        // Insert into UserSource table
-        await poolConnection.request()
-            .input('userId', sql.Int, userId)
-            .input('sourceId', sql.Int, sourceId)
-            .input('title', sql.NVarChar, urlName)
-            .input('tags', sql.NVarChar, tags)
-            .query(`
-                INSERT INTO UserSource (userId, sourceId, title, tags)
-                VALUES (@userId, @sourceId, @title, @tags)
-            `);
-
-        // Insert chunks and embeddings into Content table
-        for (let i = 0; i < chunks.length; i++) {
-            const chunk = chunks[i];
-            const embedding = embeddings[i];
-
-            if (!embedding || embedding.length === 0) {
-                console.error(`Skipping invalid embedding for chunk ${i + 1}`);
-                continue;
+            if (userCheckResult.recordset.length === 0) {
+                return res.status(400).json({ error: `Invalid userId: ${userId}` });
             }
 
-            const serializedEmbedding = Buffer.from(JSON.stringify(embedding));
-            console.log(`Inserting chunk ${i + 1} with embedding size: ${serializedEmbedding.length}`);
+            const { title, rawData } = await scrapeUrl(url);
+            const chunks = await generateChunks(rawData);
+            const embeddings = await generateEmbeddings(chunks);
+
+            const insertSourceResult = await poolConnection.request()
+                .input('URL', sql.NVarChar, url)
+                .input('rawData', sql.NVarChar, rawData)
+                .query(`
+                    INSERT INTO Sources (URL, saveDate, rawData)
+                    OUTPUT inserted.sourceId
+                    VALUES (@URL, GETDATE(), @rawData)
+                `);
+
+            const sourceId = insertSourceResult.recordset[0]?.sourceId;
 
             await poolConnection.request()
+                .input('userId', sql.Int, userId)
                 .input('sourceId', sql.Int, sourceId)
-                .input('chunkOrder', sql.Int, i + 1)
-                .input('contentTextChunk', sql.NVarChar, chunk)
-                .input('embedding', sql.VarBinary, serializedEmbedding)
+                .input('title', sql.NVarChar, urlName)
+                .input('tags', sql.NVarChar, '1')
                 .query(`
-                    INSERT INTO Content (sourceId, chunkOrder, contentTextChunk, embedding, embeddingDate)
-                    VALUES (@sourceId, @chunkOrder, @contentTextChunk, @embedding, GETDATE())
+                    INSERT INTO UserSource (userId, sourceId, title, tags)
+                    VALUES (@userId, @sourceId, @title, @tags)
                 `);
+
+            res.status(201).json({ message: 'Source added successfully!' });
+        } catch (err) {
+            console.error('Error in postSource:', err);
+            res.status(500).json({ error: 'Internal server error while adding source.' });
         }
+    },
 
-        res.status(201).json({
-            status: 'Sources received, scraped, and embedded successfully!',
-            sources: { title, rawData }
-        });
-    } catch (err) {
-        console.error('Error handling sources:', err.message, err.stack);
-        res.status(500).json({ error: 'Error processing sources', details: err.message });
+    deleteSource: async (req, res) => {
+        const userId = parseInt(req.params.userId);
+        const sourceId = parseInt(req.params.sourceId);
+
+        try {
+            const poolConnection = await pool;
+            const result = await poolConnection.request()
+                .input('userId', sql.Int, userId)
+                .input('sourceId', sql.Int, sourceId)
+                .query(`
+                    DELETE FROM UserSource
+                    WHERE userId = @userId AND sourceId = @sourceId
+                `);
+
+            if (result.rowsAffected[0] > 0) {
+                res.status(200).json({ message: 'Source deleted successfully!' });
+            } else {
+                res.status(404).json({ message: 'Source not found or user does not have permission to delete it.' });
+            }
+        } catch (err) {
+            console.error('Error in deleteSource:', err);
+            res.status(500).json({ error: 'Internal server error while deleting source.' });
+        }
     }
-},
-
-  deleteSource: async (req, res) => {
-    const user = parseInt(req.params.userId);
-    const sourceId = parseInt(req.params.sourceId);
-    try{
-      const poolConnection = await pool;
-      const result = await poolConnection.request()
-                              .input('id', sql.Int, sourceId)
-                              .query('DELETE FROM Sources where id = @id');
-
-      if (result.rowsAffected[0] > 0) {
-        res.status(200).json({ message: 'Source deleted successfully!' });
-      } else {
-        res.status(404).json({ message: 'Source not found or user does not have permission to delete it.' });
-      }
-    } catch(err) {
-      console.error('Error deleting source:', err);
-      res.status(500).json({ error: 'Error deleting source' });
-    }
-  }
-}
+};
 
 module.exports = { sourceController };
