@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "(cd frontend && npm start) & (cd backend && npm start)"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/YW-2022/theta_project.git"

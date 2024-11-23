@@ -315,7 +315,7 @@
                       "type": "string",
                       "example": "https://arxiv.org/html/2410.21256v1"
                     },
-                    "title": {
+                    "urlName": {
                       "type": "string",
                       "example": "Multi-modal AI for comprehensive breast cancer prognostication"
                     }
@@ -443,32 +443,105 @@
         }
       }
     },
-    "/api/users": {
-      "get": {
+    "/api/users/signin": {
+      "post": {
         "tags": [
           "user"
         ],
-        "summary": "Get all users",
-        "description": "Get a list of all users and their meta data",
+        "summary": "Sign in a user",
+        "description": "Sign in an existing user using their email and password.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "john.smith@cornell.edu"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "fakePassword123"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "Retrieved all users!",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "user": {
+                      "type": "integer",
+                      "example": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+         "401": {
+            "description": "Invalid email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid email or password"
+                    }
                   }
                 }
               }
             }
           },
           "404": {
-            "description": "Users not found"
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "SQL error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Error querying the database"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      },
+      }
+    }, 
+    "/api/users/signup": {
       "post": {
         "tags": [
           "user"
@@ -503,7 +576,7 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful operation: User created",
             "content": {
               "application/json": {
                 "schema": {

@@ -51,7 +51,7 @@ const userController = {
                 }
             } else {
                 // Invalid credentials
-                res.status(401).json({ error: 'User not found' });
+                res.status(404).json({ error: 'User not found' });
             }
         } catch (err) {
             console.error('SQL error', err);
