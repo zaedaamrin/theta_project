@@ -25,7 +25,7 @@ const SourceLibrary = () => {
           setSources(data.sources); // Store the first five sources in state
         } else {
           console.error('Failed to fetch sources:', response.status, response.statusText);
-          setError('Failed to fetch sources.');
+          setError('No sources...');
         }
       } catch (err) {
         console.error('Error fetching sources:', err);
@@ -48,7 +48,7 @@ const SourceLibrary = () => {
         {loading ? (
           <p>Loading sources...</p>
         ) : error ? (
-          <p style={{ color: 'red' }}>{error}</p>
+          <p style={{ color: 'black', fontWeight: 'bold'}}>{error}</p>
         ) : sources.length > 0 ? (
           sources.map((source, index) => (
             <div key={source.sourceId} className="library-item">
