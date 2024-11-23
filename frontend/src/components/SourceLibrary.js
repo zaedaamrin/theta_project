@@ -22,7 +22,7 @@ const SourceLibrary = () => {
         const response = await fetch(`http://localhost:8000/api/${userId}/sources`); // Use the correct route
         if (response.ok) {
           const data = await response.json();
-          setSources(data.sources); // Store the first five sources in state
+          setSources(data.sources); // Store the sources in state
         } else {
           console.error('Failed to fetch sources:', response.status, response.statusText);
           setError('No sources...');
@@ -48,12 +48,21 @@ const SourceLibrary = () => {
         {loading ? (
           <p>Loading sources...</p>
         ) : error ? (
-          <p style={{ color: 'black', fontWeight: 'bold'}}>{error}</p>
+          <p style={{ color: 'black', fontWeight: 'bold' }}>{error}</p>
         ) : sources.length > 0 ? (
           sources.map((source, index) => (
             <div key={source.sourceId} className="library-item">
-              {index + 1}. {source.title || source.URL} {/* Display title or URL */}
+              {index + 1}.{' '}
+              <a 
+                href={source.URL} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="source-link"
+              >
+                {source.title || source.URL} {/* Display title if available, otherwise URL */}
+              </a>
             </div>
+
           ))
         ) : (
           <p>No sources available.</p>

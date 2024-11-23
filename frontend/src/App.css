@@ -838,4 +838,8 @@ body, html {
   text-decoration: none; /* Keep underline removed on hover */
 }
 
+.source-link {
+  color: black; /* Make the text black */
+  text-decoration: none; /* Remove the underline */
+}
 
