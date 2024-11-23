@@ -27,6 +27,5 @@
     "playwright": "^1.49.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
-  },
-  "proxy": "http://localhost:8000"
+  }
 }
