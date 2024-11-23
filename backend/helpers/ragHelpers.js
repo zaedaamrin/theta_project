@@ -2,7 +2,7 @@ const { client } = require('../models/completionModel');
 
 async function generateResponse(userMessage) {
     // embed user query first
-    TODO 
+    // TODO 
     // retrieving chunks and performing cosine similarity 
     getSimilarChunks: async (queryEmbedding) => {
         try {
