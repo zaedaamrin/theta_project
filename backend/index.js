@@ -107,7 +107,18 @@ const app = express();
 
 // Use CORS middleware before any routes are registered
 app.use(cors({
-  origin: 'http://localhost:3000', // 允许来自前端的请求
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',  // Local development
+      'https://microsoft-smart-memory-80m8z9drd-zaedaamrins-projects.vercel.app' // Vercel frontend URL
+    ];
+
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // 允许的方法
   allowedHeaders: ['Content-Type'], // 允许的请求头
 }));
