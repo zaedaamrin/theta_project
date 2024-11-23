@@ -89,7 +89,7 @@ const sourceController = {
                     INSERT INTO UserSource (userId, sourceId, title, tags)
                     VALUES (@userId, @sourceId, @title, @tags)
                 `);
-            // Insert chunks and embeddings into Content table
+        // Insert chunks and embeddings into Content table
         for (let i = 0; i < chunks.length; i++) {
           const chunk = chunks[i];
           const embedding = embeddings[i];
@@ -100,7 +100,7 @@ const sourceController = {
           }
 
           const serializedEmbedding = Buffer.from(JSON.stringify(embedding));
-          console.log(`Inserting chunk ${i + 1} with embedding size: ${serializedEmbedding.length}`);
+          // Uncomment to check embedding size: console.log(`Inserting chunk ${i + 1} with embedding size: ${serializedEmbedding.length}`);
 
           await poolConnection.request()
               .input('sourceId', sql.Int, sourceId)
@@ -113,7 +113,7 @@ const sourceController = {
               `);
       }
             res.status(201).json({ message: 'Source added successfully!' });
-            console.log("sources added");
+            console.log("Source added successfully");
         } catch (err) {
             console.error('Error in postSource:', err);
             res.status(500).json({ error: 'Internal server error while adding source.' });
