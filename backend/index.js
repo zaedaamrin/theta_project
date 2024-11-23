@@ -119,9 +119,10 @@ app.use(cors({
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // 允许的方法
-  allowedHeaders: ['Content-Type'], // 允许的请求头
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
 }));
+
 
 app.use(express.json());   //create middleware 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
