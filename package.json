@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "(cd frontend && npm start) & (cd backend && npm start)"
+    "postinstall": "npx playwright install",
+    "install:all": "cd frontend && npm install && cd ../backend && npm install",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\""
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,7 @@
   "devDependencies": {
     "@playwright/test": "^1.48.2",
     "@types/node": "^22.8.6",
+    "concurrently": "^9.1.0",
     "express": "^4.21.1"
   },
   "dependencies": {
