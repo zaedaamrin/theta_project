@@ -86,9 +86,6 @@
 //   res.json({ message: 'Test route works!' });
 // });
 
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
 
 
 const express = require('express');
