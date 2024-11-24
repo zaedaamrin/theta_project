@@ -3,7 +3,7 @@ const { generateEmbeddings } = require('./sourcesHelpers.js');
 // Import OpenAI SDK
 const { OpenAI } = require('openai');
 const openai = new OpenAI({
-  apiKey: 'enter-your-api-key'
+  apiKey: 'enter-openai-api-key'
 });
 
 const calculateCosineSimilarity = (vecA, vecB) => {
