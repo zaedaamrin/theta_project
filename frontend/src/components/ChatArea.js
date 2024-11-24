@@ -13,14 +13,13 @@ const ChatArea = ({ messages, setMessages }) => {
       // Add the user message to the messages array
       setMessages([...messages, { type: 'user', text: messageText }]);
 
-      try {
-        const response = await fetch('http://localhost:8000/api/0/chats/0/message', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: messageText }), // Use key-value pair as specified
-        });
+      const response = await fetch(`http://localhost:8000/api/${userId}/chats/${chatId}/message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: messageText }),
+      });      
 
         if (response.ok) {
           const data = await response.json(); // Parse the response JSON
