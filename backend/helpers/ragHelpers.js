@@ -1,10 +1,6 @@
 const { pool } = require('../database.js');
 const { generateEmbeddings } = require('./sourcesHelpers.js');
-// Import OpenAI SDK
-const { OpenAI } = require('openai');
-const openai = new OpenAI({
-  apiKey: 'enter-openai-api-key'
-});
+const { client } = require('../models/completionModel');
 
 const calculateCosineSimilarity = (vecA, vecB) => {
     // converting Buffer or Float32Array to a regular array
@@ -92,9 +88,9 @@ async function generateResponse(userMessage) {
       console.log('Generated context for response:', context);
   
       // send request to openai api
-      const result = await openai.chat.completions.create({
+      const result = await client.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are a helpful assistant. Use the provided context to answer professionally.' },
+          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, inform the user and offer general guidance if appropriate. Always ensure your responses are clear, concise, and relevant to the query from the user.' },
           { role: 'user', content: `Context: ${context}\n\nQuestion: ${userMessage}` },
         ],
         model: 'gpt-4',

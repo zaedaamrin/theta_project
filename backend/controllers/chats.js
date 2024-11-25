@@ -98,51 +98,51 @@ const chatController = {
             const messageOrder = orderResult.recordset[0].nextMessageOrder;
             console.log('Order Result:', orderResult.recordset);
 
-            // Save the user message to ChatHistory
-            await poolConnection.request()
-                .input('chatId', sql.Int, chatId)
-                .input('prompt', sql.NVarChar, userMessage)
-                .input('answer', sql.NVarChar, null)
-                .input('messageOrder', sql.Int, messageOrder)
-                .query(`
-                    INSERT INTO ChatHistory (chatId, prompt, answer, messageOrder, timestamp)
-                    VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
-                `)
-                .then(() => {
-                    console.log('User message inserted successfully');
-                })
-                .catch((error) => {
-                    console.error('Error inserting user message:', error);
-                    res.status(500).json({ error: 'Error inserting user message' });
-                    return;
-                });
-
             // generate bot response using the RAG pipeline
             console.log('Calling generateResponse with userMessage:', userMessage);
-            const botResponse = await generateResponse(userMessage);
-            console.log('Bot response:', botResponse);
+            const modelResponse = await generateResponse(userMessage);
+            console.log('Model response:', modelResponse);
+
+            // Save the user message to ChatHistory
+            // await poolConnection.request()
+            //     .input('chatId', sql.Int, chatId)
+            //     .input('prompt', sql.NVarChar, userMessage)
+            //     .input('answer', sql.NVarChar, modelResponse)
+            //     .input('messageOrder', sql.Int, messageOrder)
+            //     .query(`
+            //         INSERT INTO ChatHistory (chatId, prompt, answer, messageOrder, timestamp)
+            //         VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
+            //     `)
+            //     .then(() => {
+            //         console.log('User message inserted successfully');
+            //     })
+            //     .catch((error) => {
+            //         console.error('Error inserting user message:', error);
+            //         res.status(500).json({ error: 'Error inserting user message' });
+            //         return;
+            //     });
 
             // Save the bot response to ChatHistory
-            await poolConnection.request()
-                .input('chatId', sql.Int, chatId)
-                .input('prompt', sql.NVarChar, null)
-                .input('answer', sql.NVarChar, botResponse)
-                .input('messageOrder', sql.Int, messageOrder + 1)
-                .query(`
-                    INSERT INTO ChatHistory (chatId, prompt, answer, messageOrder, timestamp)
-                    VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
-                `);
+            // await poolConnection.request()
+            //     .input('chatId', sql.Int, chatId)
+            //     .input('prompt', sql.NVarChar, null)
+            //     .input('answer', sql.NVarChar, botResponse)
+            //     .input('messageOrder', sql.Int, messageOrder + 1)
+            //     .query(`
+            //         INSERT INTO ChatHistory (chatId, prompt, answer, messageOrder, timestamp)
+            //         VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
+            //     `);
 
             // Update the lastOpenedDate for the chat
-            await poolConnection.request()
-                .input('chatId', sql.Int, chatId)
-                .query(`
-                    UPDATE Chats
-                    SET lastOpenedDate = GETDATE()
-                    WHERE chatId = @chatId
-                `);
+            // await poolConnection.request()
+            //     .input('chatId', sql.Int, chatId)
+            //     .query(`
+            //         UPDATE Chats
+            //         SET lastOpenedDate = GETDATE()
+            //         WHERE chatId = @chatId
+            //     `);
 
-            res.status(201).json({ response: botResponse });
+            res.status(201).json({ response: modelResponse });
         } catch (err) {
             console.error('Error sending message:', err);
             res.status(500).json({ error: 'Error sending message' });
