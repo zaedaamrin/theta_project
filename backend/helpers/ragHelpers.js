@@ -18,7 +18,6 @@ const calculateCosineSimilarity = (vecA, vecB) => {
 
     // ensuring both vectors are regular arrays
     if (!Array.isArray(vecA) || !Array.isArray(vecB)) {
-        console.error('One or both vectors are not arrays:', vecA, vecB);
         return 0; // Or handle the error in another way
     }
 
@@ -27,7 +26,7 @@ const calculateCosineSimilarity = (vecA, vecB) => {
     const magnitudeB = Math.sqrt(vecB.reduce((sum, b) => sum + b ** 2, 0));
 
     if (magnitudeA === 0 || magnitudeB === 0) {
-        console.warn('One or both vectors are zero vectors:', vecA, vecB);
+        //console.warn('One or both vectors are zero vectors:', vecA, vecB);
         return 0;
     }
 
@@ -38,7 +37,7 @@ const calculateCosineSimilarity = (vecA, vecB) => {
 // retrieving top 5 chunks from the db using cosine similarity
 async function getSimilarChunks(queryEmbedding) {
     try {
-        console.log('Query Embedding:', queryEmbedding); 
+        //console.log('Query Embedding:', queryEmbedding); 
         const poolConnection = await pool;
 
         // retrieve all embeddings and chunks from the Content table
@@ -46,7 +45,7 @@ async function getSimilarChunks(queryEmbedding) {
         const result = await poolConnection.request()
             .query('SELECT contentId, contentTextChunk, embedding FROM Content');
 
-        console.log('Database returned records:', result.recordset.length); 
+        //console.log('Database returned records:', result.recordset.length); 
         const contentData = result.recordset.map(record => ({
             contentId: record.contentId,
             contentTextChunk: record.contentTextChunk,
@@ -63,7 +62,7 @@ async function getSimilarChunks(queryEmbedding) {
 
         // sorting by similarity score and return the top 5 results
         similarities.sort((a, b) => b.similarity - a.similarity);
-        console.log('Top 5 similar chunks:', similarities.slice(0, 5));
+        //console.log('Top 5 similar chunks:', similarities.slice(0, 5));
         return similarities.slice(0, 5);
     } catch (err) {
         console.error('Error retrieving similar chunks:', err.message);
@@ -78,14 +77,13 @@ async function generateResponse(userMessage) {
       const queryEmbedding = await generateEmbeddings([userMessage]);
       const queryEmbeddingArray = queryEmbedding.map(buffer => new Float32Array(buffer)); 
   
-      console.log('Generated query embedding:', queryEmbeddingArray);
+      //console.log('Generated query embedding:', queryEmbeddingArray);
   
       // retrieve similar chunks from the database
       const similarChunks = await getSimilarChunks(queryEmbeddingArray[0]); // Pass the first embedding
   
       // create context from similar chunks
       const context = similarChunks.map(chunk => chunk.contentTextChunk).join('\n');
-      console.log('Generated context for response:', context);
   
       // send request to openai api
       const result = await client.chat.completions.create({
