@@ -10,5 +10,5 @@ router.post('/api/:userId/chats', chatController.postChat);
 // router.delete('/api/:userId/chats/:chatId', chatController.deleteChat);
 
 router.post('/api/:userId/chats/:chatId/message', chatController.postMessage);
-
+router.get('/api/:chatId/chathistory', chatController.getChatHistory);
 module.exports = { router };

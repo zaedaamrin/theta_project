@@ -133,14 +133,14 @@ const chatController = {
             //         VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
             //     `);
 
-            // Update the lastOpenedDate for the chat
-            // await poolConnection.request()
-            //     .input('chatId', sql.Int, chatId)
-            //     .query(`
-            //         UPDATE Chats
-            //         SET lastOpenedDate = GETDATE()
-            //         WHERE chatId = @chatId
-            //     `);
+            //Update the lastOpenedDate for the chat
+            await poolConnection.request()
+                .input('chatId', sql.Int, chatId)
+                .query(`
+                    UPDATE Chats
+                    SET lastOpenedDate = GETDATE()
+                    WHERE chatId = @chatId
+                `);
 
             res.status(201).json({ response: modelResponse });
         } catch (err) {
