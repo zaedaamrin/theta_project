@@ -104,23 +104,23 @@ const chatController = {
             console.log('Model response:', modelResponse);
 
             // Save the user message to ChatHistory
-            // await poolConnection.request()
-            //     .input('chatId', sql.Int, chatId)
-            //     .input('prompt', sql.NVarChar, userMessage)
-            //     .input('answer', sql.NVarChar, modelResponse)
-            //     .input('messageOrder', sql.Int, messageOrder)
-            //     .query(`
-            //         INSERT INTO ChatHistory (chatId, prompt, answer, messageOrder, timestamp)
-            //         VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
-            //     `)
-            //     .then(() => {
-            //         console.log('User message inserted successfully');
-            //     })
-            //     .catch((error) => {
-            //         console.error('Error inserting user message:', error);
-            //         res.status(500).json({ error: 'Error inserting user message' });
-            //         return;
-            //     });
+            await poolConnection.request()
+                .input('chatId', sql.Int, chatId)
+                .input('prompt', sql.NVarChar, userMessage)
+                .input('answer', sql.NVarChar, modelResponse)
+                .input('messageOrder', sql.Int, messageOrder)
+                .query(`
+                    INSERT INTO ChatHistory (chatId, prompt, answer, messageOrder, timestamp)
+                    VALUES (@chatId, @prompt, @answer, @messageOrder, GETDATE())
+                `)
+                .then(() => {
+                    console.log('User message inserted successfully');
+                })
+                .catch((error) => {
+                    console.error('Error inserting user message:', error);
+                    res.status(500).json({ error: 'Error inserting user message' });
+                    return;
+                });
 
             // Save the bot response to ChatHistory
             // await poolConnection.request()
