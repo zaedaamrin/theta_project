@@ -13,6 +13,8 @@ const ChatArea = ({ messages, setMessages }) => {
       // Add the user message to the messages array
       setMessages([...messages, { type: 'user', text: messageText }]);
 
+      try {
+        const userId = localStorage.getItem('userId');
       const response = await fetch(`http://localhost:8000/api/${userId}/chats/${chatId}/message`, {
         method: 'POST',
         headers: {
