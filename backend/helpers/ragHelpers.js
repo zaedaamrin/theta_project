@@ -80,16 +80,11 @@ async function getSimilarChunks(queryEmbedding) {
               const buffer = record.embedding;
       
               if (Buffer.isBuffer(buffer)) {
-                  // 将 Buffer 转换为 Float32Array
                   const floatArray = new Float32Array(buffer.buffer, buffer.byteOffset, buffer.length / Float32Array.BYTES_PER_ELEMENT);
-      
-                  // 确保最终转换为长度为 6144 的数组
                   const resizedArray = new Float32Array(6144);
                   if (floatArray.length >= 6144) {
-                      // 如果长度大于或等于 6144，截取前 6144 个元素
                       resizedArray.set(floatArray.subarray(0, 6144));
                   } else {
-                      // 如果长度小于 6144，复制所有元素，剩下的默认为 0
                       resizedArray.set(floatArray);
                   }
       
@@ -108,10 +103,6 @@ async function getSimilarChunks(queryEmbedding) {
           }
       }).filter(item => item !== null);
       
-        
-
-
-
 
         // calculate cosine similarity for each chunk
         console.log('Calculating cosine similarity for each chunk...');
