@@ -52,6 +52,53 @@ const chatController = {
             res.status(500).json({ error: 'Error creating chat' });
         }
     },
+    //删除一个chat
+    deleteChat: async(req, res) => {
+        const userId = parseInt(req.params.userId);
+        const chatId = parseInt(req.params.chatId);
+        console.log(userId);
+        console.log(chatId);
+        try {
+            const poolConnection = await pool;
+            const resultSelectChatHistory = await poolConnection.request()
+            .input('chatId', sql.Int, chatId)
+            .query(`
+                SELECT * FROM ChatHistory
+                    WHERE chatId = @chatId
+                `);
+            console.log(resultSelectChatHistory.recordset);
+            const resultSelectChats = await poolConnection.request()
+            .input('userId', sql.Int, userId)
+            .input('chatId', sql.Int, chatId)
+            .query(`
+                SELECT * FROM Chats
+                    WHERE userId = @userId AND chatId = @chatId
+                `);
+            console.log(resultSelectChats.recordset);
+            const resultDeleteChatHistory = await poolConnection.request()
+                .input('chatId', sql.Int, chatId)
+                .query(`
+                    DELETE FROM ChatHistory
+                        WHERE chatId = @chatId
+                    `);
+            const resultDeleteChats = await poolConnection.request()
+                .input('userId', sql.Int, userId)
+                .input('chatId', sql.Int, chatId)
+                .query(`
+                    DELETE FROM Chats
+                        WHERE userId = @userId AND chatId = @chatId
+                    `);
+            console.log(resultDeleteChatHistory);
+            console.log(resultDeleteChats);
+            if(resultDeleteChats.rowsAffected[0] > 0 && resultDeleteChatHistory.rowsAffected[0] > 0){
+                res.status(200).json({message: 'delete success'});
+            }else{
+                res.status(404).json({message: 'delete fail'});
+            }
+        } catch(err){
+            res.status(500).json({error: 'Internal server error'});
+        }
+    },
 
     // Get the chat history for a specific chat
     getChatHistory: async (req, res) => {
