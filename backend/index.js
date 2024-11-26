@@ -110,7 +110,9 @@ app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
       'http://localhost:3000',  // Local development
-      'https://microsoft-smart-memory-80m8z9drd-zaedaamrins-projects.vercel.app' // Vercel frontend URL
+      'https://microsoft-smart-memory-80m8z9drd-zaedaamrins-projects.vercel.app',
+      'https://microsoft-smart-memory.vercel.app/' // Vercel frontend URL
+    
     ];
 
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
