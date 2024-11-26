@@ -107,27 +107,31 @@
 // export default ChatArea;
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown'; // 引入 react-markdown
 import '../App.css';
 
 const ChatArea = ({ messages, setMessages }) => {
   const [chatId, setChatId] = useState(null); // State to store the chatId
+  const isInitialized = useRef(false); // Prevent duplicate calls
 
   useEffect(() => {
-    // Fetch or create a chat session and get the chatId
+    if (isInitialized.current) return; // Skip if already initialized
+    isInitialized.current = true; // Mark as initialized
+
     const initializeChat = async () => {
       try {
         const userId = localStorage.getItem('userId');
         const response = await fetch(`http://localhost:8000/api/${userId}/chats`, {
-          method: 'POST', // Adjust to GET if fetching an existing chat session
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
         });
-        
+
         if (response.ok) {
           const data = await response.json();
+          console.log('New chat created:', data);
           setChatId(data.chatId); // Assuming the backend returns { chatId: '12345' }
         } else {
           console.error('Error initializing chat:', response.status, response.statusText);
@@ -138,7 +142,7 @@ const ChatArea = ({ messages, setMessages }) => {
     };
 
     initializeChat();
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, []);// Empty dependency array ensures this runs only once on mount
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
