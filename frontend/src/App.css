@@ -721,7 +721,8 @@ body, html {
   background-color: #000;
   color: white;
   padding: 20px;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
+ 
 }
 
 .chat-messages {
@@ -732,14 +733,15 @@ body, html {
   padding: 10px;
   border-radius: 5px;
   display: flex;
-  flex-direction: column; /* Ensure messages stack vertically */
+  flex-direction: column; 
 }
+
 
 .message {
   max-width: 70%;
-  padding: 10px;
+  padding: 1px;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   color: #333;
   word-wrap: break-word;
   font-size:18px;
