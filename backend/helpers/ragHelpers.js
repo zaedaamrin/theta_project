@@ -198,6 +198,6 @@ async function generateResponse(userMessage) {
       throw error;
     }
 }
-let message = 'what is splatoon 3?'
-generateResponse(message);
+// let message = 'what is splatoon 3?'
+// generateResponse(message);
 module.exports = { generateResponse };
