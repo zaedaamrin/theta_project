@@ -52,7 +52,7 @@ async function getSimilarChunks(queryEmbedding) {
         console.log('Retrieving embeddings and chunks from the Content table...');
         const result = await poolConnection.request()
             .query('SELECT contentId, contentTextChunk, embedding FROM Content');
-        const similarityThreshold = 0.5;
+        const similarityThreshold = 0.4;
         console.log('Database returned records:', result.recordset.length); 
         // const contentData = result.recordset.map(record => {
         //   try{
@@ -184,7 +184,7 @@ async function generateResponse(userMessage) {
       // send request to openai api
       const result = await client.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, donot generate any response. Always ensure your responses are clear, concise, and relevant to the user\'s query' },
+          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, inform the user and offer general guidance if appropriate. Always ensure your responses are clear, concise, and relevant to the query from the user.' },
           { role: 'user', content: `Context: ${context}\n\nQuestion: ${userMessage}` },
         ],
         model: 'gpt-4',
