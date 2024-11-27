@@ -99,14 +99,17 @@ const sourceController = {
               continue;
           }
 
-          const serializedEmbedding = Buffer.from(JSON.stringify(embedding));
+          // const serializedEmbedding = Buffer.from(JSON.stringify(embedding));
+          // console.log("length of serializedEmbedding", serializedEmbedding.length);
+          // console.log(serializedEmbedding);
+          console.log(embedding);
           // Uncomment to check embedding size: console.log(`Inserting chunk ${i + 1} with embedding size: ${serializedEmbedding.length}`);
 
           await poolConnection.request()
               .input('sourceId', sql.Int, sourceId)
               .input('chunkOrder', sql.Int, i + 1)
               .input('contentTextChunk', sql.NVarChar, chunk)
-              .input('embedding', sql.VarBinary, serializedEmbedding)
+              .input('embedding', sql.VarBinary, embedding)
               .query(`
                   INSERT INTO Content (sourceId, chunkOrder, contentTextChunk, embedding, embeddingDate)
                   VALUES (@sourceId, @chunkOrder, @contentTextChunk, @embedding, GETDATE())

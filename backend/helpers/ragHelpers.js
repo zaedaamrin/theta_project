@@ -48,7 +48,6 @@ async function getSimilarChunks(queryEmbedding) {
     try {
         //console.log('Query Embedding:', queryEmbedding); 
         const poolConnection = await pool;
-
         // retrieve all embeddings and chunks from the Content table
         console.log('Retrieving embeddings and chunks from the Content table...');
         const result = await poolConnection.request()
@@ -71,38 +70,47 @@ async function getSimilarChunks(queryEmbedding) {
         //     console.error('erros');
         //     return null;
         //   }
-            
-        
         // });
-  
-        const contentData = result.recordset.map(record => {
-          try {
-              const buffer = record.embedding;
+        console.log("length of embeddings", queryEmbedding.length);
+    //     const contentData = result.recordset.map(record => {
+    //       try {
+    //         const binary = record.embedding;
+    //         const arrayBuffer = binary.buffer.slice(binary.byteOffset,binary.byteOffset+binary.byteLength);
+    //         const originalEmbeddings =  Array.from(new Float32Array(arrayBuffer));
+    //         console.log("length of chunks", originalEmbeddings.length);
+    //               return {
+    //                   contentId: record.contentId,
+    //                   contentTextChunk: record.contentTextChunk,
+    //                   embedding: originalEmbeddings
+    //               };
+    //           } 
+    //       catch (error) {
+    //           console.error('Error converting embedding for contentId:', record.contentId, error);
+    //           return null;
+    //       }
+    //   })
+    const contentData = result.recordset.map(record => {
+        if (!record || !record.embedding || !record.contentId) {
+          console.warn('Invalid record found:', record);
+          return null;
+        }
       
-              if (Buffer.isBuffer(buffer)) {
-                  const floatArray = new Float32Array(buffer.buffer, buffer.byteOffset, buffer.length / Float32Array.BYTES_PER_ELEMENT);
-                  const resizedArray = new Float32Array(6144);
-                  if (floatArray.length >= 6144) {
-                      resizedArray.set(floatArray.subarray(0, 6144));
-                  } else {
-                      resizedArray.set(floatArray);
-                  }
+        try {
+          const binary = record.embedding;
+          const arrayBuffer = binary.buffer.slice(binary.byteOffset, binary.byteOffset + binary.byteLength);
+          const originalEmbeddings = Array.from(new Float32Array(arrayBuffer));
+          return {
+            contentId: record.contentId,
+            contentTextChunk: record.contentTextChunk,
+            embedding: originalEmbeddings
+          };
+        } catch (error) {
+          console.error('Error converting embedding for contentId:', record.contentId, error);
+          return null;
+        }
+      }).filter(item => item !== null); // 过滤掉无效的记录
       
-                  return {
-                      contentId: record.contentId,
-                      contentTextChunk: record.contentTextChunk,
-                      embedding: resizedArray
-                  };
-              } else {
-                  console.error('Embedding is not a buffer for contentId:', record.contentId);
-                  return null;
-              }
-          } catch (error) {
-              console.error('Error converting embedding for contentId:', record.contentId, error);
-              return null;
-          }
-      }).filter(item => item !== null);
-      
+
 
         // calculate cosine similarity for each chunk
         console.log('Calculating cosine similarity for each chunk...');
@@ -133,13 +141,16 @@ async function generateResponse(userMessage) {
       const sentences = userMessage;
       console.log(sentences);
       const queryEmbedding = await generateEmbeddings([sentences]);
-      const queryEmbeddingArray = queryEmbedding.map(buffer => new Float32Array(buffer)); 
-  
+    //   const queryEmbeddingArray = queryEmbedding.map(buffer => new Float32Array(buffer)); 
+      const originalQueryEmbeddings = queryEmbedding.map(binary => {
+           const arrayBuffer = binary.buffer.slice(binary.byteOffset,binary.byteOffset+binary.byteLength);
+           return Array.from(new Float32Array(arrayBuffer));
+         })
       //console.log('Generated query embedding:', queryEmbeddingArray);
   
       // retrieve similar chunks from the database
       let allSimilarChunks = [];
-      for( let embedding of queryEmbeddingArray){
+      for( let embedding of originalQueryEmbeddings){
         const similarChunks = await getSimilarChunks(embedding);
         allSimilarChunks = allSimilarChunks.concat(similarChunks);
       }
@@ -173,7 +184,7 @@ async function generateResponse(userMessage) {
       // send request to openai api
       const result = await client.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, inform the user and offer general guidance if appropriate. Always ensure your responses are clear, concise, and relevant to the query from the user.' },
+          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, donot generate any response. Always ensure your responses are clear, concise, and relevant to the user\'s query' },
           { role: 'user', content: `Context: ${context}\n\nQuestion: ${userMessage}` },
         ],
         model: 'gpt-4',
@@ -187,6 +198,6 @@ async function generateResponse(userMessage) {
       throw error;
     }
 }
-let message = 'what is NP-completed?'
-// generateResponse(message);
+let message = 'what is splatoon 3?'
+generateResponse(message);
 module.exports = { generateResponse };

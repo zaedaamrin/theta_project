@@ -56,7 +56,7 @@ async function generateEmbeddings(chunks) {
       model: 'text-embedding-3-small',
       input: chunks,
     });
-
+    // embeding vector size 1536
     const embeddings = response.data.map(item => item.embedding);
     // Uncomment to check embeddings: console.log("Generated embeddings:", embeddings);
 
@@ -64,8 +64,25 @@ async function generateEmbeddings(chunks) {
     const binaryEmbeddings = embeddings.map(embedding => 
       Buffer.from(new Float32Array(embedding).buffer)
     );
+    // console.log("generated embeddings:", embeddings);
+    // console.log("generated binaryEmbeddings:", binaryEmbeddings);
+    // console.log("length of embedding:", embeddings[0].length);
+    // console.log("length of buffer:", binaryEmbeddings[0].length);
+    // console.log("Embedding complete")
 
-    console.log("Embedding complete")
+    // const originalEmbeddings = binaryEmbeddings.map(binary => {
+    //   const arrayBuffer = binary.buffer.slice(binary.byteOffset,binary.byteOffset+binary.byteLength);
+    //   return Array.from(new Float32Array(arrayBuffer));
+    // })
+    // console.log(originalEmbeddings);
+    // console.log("length of ", originalEmbeddings[0].length);
+    // for(let i = 0; i < originalEmbeddings.length; i++){
+    //   if(embeddings[i] === originalEmbeddings[i])
+    //     console.log(true);
+    //   console.log(false);
+    //   console.log(embeddings[i]);
+    //   console.log(originalEmbeddings[i]);
+    // }
 
     return binaryEmbeddings;
   } catch (error) {
