@@ -8,6 +8,7 @@ import RegistrationPage from './pages/RegistrationPage';
 import URLSubmission from './pages/URLSubmissionPage';
 import URLSubmission2 from './pages/URLSubmissionPage2';
 import ChatPage from './pages/ChatPage';
+import ChatHistoryPage from './pages/ChatHistoryPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           {/* <Route path="/add-url" element={<URLSubmission />} /> */}
           <Route path="/add-url-2" element={<URLSubmission2 />} />
           <Route path="/chatpage" element={<ChatPage />} />
+          <Route path="/chathistorypage" element={<ChatHistoryPage />} />
 
         </Routes>
       </div>

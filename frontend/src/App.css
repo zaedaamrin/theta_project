@@ -732,10 +732,9 @@ body, html {
   background-color: #111;
   padding: 10px;
   border-radius: 5px;
-  display: flex;
-  flex-direction: column; 
+  display: flex; /* This must be set */
+  flex-direction: column; /* Messages should stack vertically */
 }
-
 
 .message {
   max-width: 70%;
@@ -747,18 +746,23 @@ body, html {
   font-size:18px;
 }
 
-.bot-message {
-  align-self: flex-start;
-  background-color: white;
-  border-radius: 10px 10px 10px 0;
-  font-size:18px;
-}
-
 .user-message {
-  align-self: flex-end;
+  align-self: flex-end !important;
   background-color: white;
   border-radius: 10px 10px 0 10px;
-  font-size:18px;
+  font-size: 18px;
+}
+
+.bot-message {
+  align-self: flex-start !important;
+  background-color: white;
+  border-radius: 10px 10px 10px 0;
+  font-size: 18px;
+}
+
+.chat-message-container {
+  display: flex; /* Make each message a flex container */
+  flex-direction: column; /* Ensure prompt and answer stack vertically */
 }
 
 .chat-input-container {

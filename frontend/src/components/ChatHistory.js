@@ -51,7 +51,6 @@ const ChatHistory = () => {
       });
 
       if (response.ok) {
-        // Remove the deleted chat from the local state
         setChatHistory((prevChats) => prevChats.filter((chat) => chat.chatId !== chatId));
       } else {
         console.error('Failed to delete chat:', response.status, response.statusText);
@@ -65,6 +64,10 @@ const ChatHistory = () => {
 
   const handleNewChatClick = () => {
     navigate('/chatpage');
+  };
+
+  const handleChatClick = (chatId) => {
+    navigate('/chathistorypage', { state: { chatId } }); // Pass chatId to the target page
   };
 
   return (
@@ -98,19 +101,16 @@ const ChatHistory = () => {
                 borderBottom: '1px solid #eee',
               }}
             >
-              <span>
-                {index + 1}.{' '}
-                <a
-                  href={`/chatpage`}
-                  className="source-link"
-                  style={{
-                    textDecoration: 'none',
-                    color: 'black',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {chat.chatName || `Chat ${index + 1}`}
-                </a>
+              <span
+                onClick={() => handleChatClick(chat.chatId)} // Handle click and navigate with chatId
+                className="source-link"
+                style={{
+                  textDecoration: 'none',
+                  color: 'black',
+                  cursor: 'pointer',
+                }}
+              >
+                {index + 1}. {chat.chatName || `Chat ${index + 1}`}
               </span>
               <button
                 onClick={() => handleDeleteChat(chat.chatId)}
