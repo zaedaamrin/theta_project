@@ -24,7 +24,7 @@ const ChatHistory = () => {
           setChatHistory(data.chats || []);
         } else {
           console.error('Failed to fetch chat history:', response.status, response.statusText);
-          setError('Failed to load chat history.');
+          setError('No chat history available...');
         }
       } catch (error) {
         console.error('Error fetching chat history:', error);
