@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const URLSubmissionTable = ({ onClose }) => {
   const [url, setUrl] = useState('');
   const [urlName, setUrlName] = useState('');
-  const [urlList, setUrlList] = useState([]);
+  const [urlList, setUrlList] = useState(() => JSON.parse(localStorage.getItem('urlList')) || []);
   const navigate = useNavigate();
-
-  // Load URLs from localStorage when component mounts
-  useEffect(() => {
-    const savedUrls = JSON.parse(localStorage.getItem('urlList')) || [];
-    setUrlList(savedUrls);
-  }, []);
 
   const handleAddUrl = () => {
     if (url && urlName) {
-      const newUrlList = [...urlList, { url, name: urlName }];
-      setUrlList(newUrlList);
-      localStorage.setItem('urlList', JSON.stringify(newUrlList)); // Save to localStorage
+      const updatedList = [...urlList, { url, name: urlName }];
+      setUrlList(updatedList);
+      localStorage.setItem('urlList', JSON.stringify(updatedList)); 
       setUrl('');
       setUrlName('');
     }
@@ -25,14 +19,14 @@ const URLSubmissionTable = ({ onClose }) => {
 
   const handleUrlChange = (e) => {
     let inputUrl = e.target.value;
-    if (!inputUrl.startsWith("https://")) {
-      inputUrl = "https://" + inputUrl;
+    if (!inputUrl.startsWith('https://')) {
+      inputUrl = 'https://' + inputUrl;
     }
     try {
       const urlObj = new URL(inputUrl);
       setUrl(urlObj.href);
     } catch (err) {
-      console.error("Invalid URL");
+      console.error('Invalid URL');
     }
   };
 
@@ -41,21 +35,60 @@ const URLSubmissionTable = ({ onClose }) => {
   };
 
   const handleDeleteUrl = (index) => {
-    const newUrlList = urlList.filter((_, i) => i !== index);
-    setUrlList(newUrlList);
-    localStorage.setItem('urlList', JSON.stringify(newUrlList)); // Update localStorage
+    const updatedList = urlList.filter((_, i) => i !== index);
+    setUrlList(updatedList);
+    localStorage.setItem('urlList', JSON.stringify(updatedList)); 
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const userId = localStorage.getItem('userId'); 
+    if (!userId) {
+      console.error('User ID not found. Please log in again.');
+      alert('User ID not found. Please log in again.');
+      return;
+    }
+
     if (urlList.length > 0) {
-      console.log('Submitted URLs:', urlList);
-      navigate('/chatpage', { state: { urlList } });
-      onClose(); // Close the modal after submission
+      console.log('Submitting URLs:', urlList);
+
+      try {
+      
+        for (const item of urlList) {
+          console.log('Posting source:', item.url);
+
+          const response = await fetch(`http://localhost:8000/api/${userId}/sources`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ urlName: item.name, url: item.url }),
+          });
+
+          if (!response.ok) {
+            console.error('Failed to save URL:', item.url);
+          }
+        }
+
+      
+        setUrlList([]);
+        localStorage.setItem('urlList', JSON.stringify([]));
+
+        onClose();
+        navigate('/chatpage', { state: { urlList } });
+      } catch (err) {
+        console.error('Error submitting URLs:', err);
+        alert('An error occurred while submitting URLs. Please try again later.');
+      }
+    } else {
+      alert('No URLs to submit.');
     }
   };
 
   return (
     <div className="url-submission-container">
+      <div className="back-to-home" onClick={() => navigate('/personal-home')}>
+        ← Return to homepage
+      </div>
       <h2 className="url-submission-title">Upload URL Sources</h2>
       <div className="url-input-container">
         <input
