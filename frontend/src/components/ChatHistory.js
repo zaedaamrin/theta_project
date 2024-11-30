@@ -74,6 +74,7 @@ const ChatHistory = () => {
       // Fetch the source library to check if it contains any sources
       const response = await fetch(`http://localhost:8000/api/${userId}/sources`);
       if (response.ok) {
+        localStorage.removeItem('chatMessages');
         navigate('/chatpage');
       } else {
         navigate('/add-url-2');

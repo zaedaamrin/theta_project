@@ -106,6 +106,10 @@ const ChatArea = ({ messages, setMessages }) => {
       </form>
     </div>
   );
+  
 };
 
 export default ChatArea;
+
+
+
