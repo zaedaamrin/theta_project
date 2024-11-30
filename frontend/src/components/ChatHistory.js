@@ -62,8 +62,26 @@ const ChatHistory = () => {
     }
   };
 
-  const handleNewChatClick = () => {
-    navigate('/chatpage');
+  const handleNewChatClick = async () => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error('User ID not found. Please log in again.');
+      setError('User ID not found. Please log in again.');
+      return;
+    }
+
+    try {
+      // Fetch the source library to check if it contains any sources
+      const response = await fetch(`http://localhost:8000/api/${userId}/sources`);
+      if (response.ok) {
+        navigate('/chatpage');
+      } else {
+        navigate('/add-url-2');
+      }
+    } catch (error) {
+      console.error('Error checking source library:', error);
+      setError('An error occurred while checking the source library.');
+    }
   };
 
   const handleChatClick = (chatId) => {
