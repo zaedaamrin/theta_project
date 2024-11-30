@@ -1,7 +1,7 @@
 const { pool } = require('../database.js');
 const { generateEmbeddings } = require('./sourcesHelpers.js');
 const { client } = require('../models/completionModel');
-
+const sql = require('mssql');
 const calculateCosineSimilarity = (vecA, vecB) => {
     // converting Buffer or Float32Array to a regular array
     if (Buffer.isBuffer(vecA)) {
@@ -44,14 +44,22 @@ const calculateCosineSimilarity = (vecA, vecB) => {
 };
 
 // retrieving top 5 chunks from the db using cosine similarity
-async function getSimilarChunks(queryEmbedding) {
+async function getSimilarChunks(queryEmbedding, userId) {
     try {
         //console.log('Query Embedding:', queryEmbedding); 
         const poolConnection = await pool;
         // retrieve all embeddings and chunks from the Content table
         console.log('Retrieving embeddings and chunks from the Content table...');
+        console.log("userId of chunks:", userId);
         const result = await poolConnection.request()
-            .query('SELECT contentId, contentTextChunk, embedding FROM Content');
+            .input('userId', sql.Int, userId)
+            .query(`
+                SELECT c.contentId, c.contentTextChunk, c.embedding 
+                    FROM Content c, Sources s, UserSource us 
+                    WHERE userId = @userId AND us.sourceId = s.sourceId AND c.sourceId = s.sourceId;
+                `);
+        
+        console.log(result);
         const similarityThreshold = 0.4;
         console.log('Database returned records:', result.recordset.length); 
         // const contentData = result.recordset.map(record => {
@@ -134,7 +142,7 @@ async function getSimilarChunks(queryEmbedding) {
 }
 
 // create response using userMessage
-async function generateResponse(userMessage) {
+async function generateResponse(userMessage,userId) {
     try {
       console.log('Step 1: Generating embeddings for user query...');
       // const sentences = userMessage.split(/[\.\!\?]\s*/); 
@@ -151,7 +159,7 @@ async function generateResponse(userMessage) {
       // retrieve similar chunks from the database
       let allSimilarChunks = [];
       for( let embedding of originalQueryEmbeddings){
-        const similarChunks = await getSimilarChunks(embedding);
+        const similarChunks = await getSimilarChunks(embedding, userId);
         allSimilarChunks = allSimilarChunks.concat(similarChunks);
       }
       // const similarChunks = await getSimilarChunks(queryEmbeddingArray[0]); // Pass the first embedding
@@ -198,6 +206,28 @@ async function generateResponse(userMessage) {
       throw error;
     }
 }
+
+// generate chat title based on the first prompt
+async function generateChatTitle(userFirstPrompt) {
+    try {
+      const result = await client.chat.completions.create({
+        messages: [
+          { role: 'system', content: 'You are an assistant that generates concise and descriptive titles for conversations based on user input. Ensure the title captures the essence of the conversation and is short and clear.' },
+          { role: 'user', content: `Please provide a concise and descriptive title for the following prompt: "${userFirstPrompt}"` },
+        ],
+        model: 'gpt-4',
+      });
+      const title = result?.choices[0]?.message?.content.trim() || 'Untitled';
+      console.log('Generated chat title:', title);
+      return title;
+    } catch (error) {
+      console.error('Error generating chat title:', error.message);
+      throw error;
+    }
+  } 
+// let userFirstPrompt = "how much is the tear of kingdom?"
+// console.log(generateChatTitle(userFirstPrompt));
+
 // let message = 'what is splatoon 3?'
 // generateResponse(message);
-module.exports = { generateResponse };
+module.exports = { generateResponse, generateChatTitle };

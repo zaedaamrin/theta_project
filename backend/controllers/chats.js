@@ -1,5 +1,5 @@
 const { pool } = require('../database.js');
-const { generateResponse } = require('../helpers/ragHelpers.js');
+const { generateResponse, generateChatTitle } = require('../helpers/ragHelpers.js');
 const sql = require('mssql');
 
 const chatController = {
@@ -144,10 +144,29 @@ const chatController = {
                 `);
             const messageOrder = orderResult.recordset[0].nextMessageOrder;
             console.log('Order Result:', orderResult.recordset);
-
+            if(messageOrder === 1){
+                console.log(userMessage);
+                const chatName = await generateChatTitle(userMessage);
+                await poolConnection.request()
+                        .input('chatId', sql.Int, chatId)
+                        .input('chatName', sql.NVarChar, chatName)
+                        .query(`
+                            UPDATE Chats
+                            SET chatName = @chatName
+                            WHERE chatId = @chatId
+                        `);
+            }
+            const result = await poolConnection.request()
+                            .input('chatId', sql.Int, chatId)
+                            .query(`
+                                SELECT userId
+                                FROM Chats
+                                WHERE chatId = @chatId
+                            `);
+            const userId = result.recordset.length > 0 ? result.recordset[0].userId : null;
             // generate bot response using the RAG pipeline
             console.log('Calling generateResponse with userMessage:', userMessage);
-            const modelResponse = await generateResponse(userMessage);
+            const modelResponse = await generateResponse(userMessage, userId);
             console.log('Model response:', modelResponse);
 
             // Save the user message to ChatHistory
