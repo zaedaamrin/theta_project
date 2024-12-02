@@ -3,7 +3,10 @@
     "builds": [
       {
         "src": "backend/api/index.js",
-        "use": "@vercel/node"
+        "use": "@vercel/node",
+        "config": {
+        "buildCommand": "npm install && npm run start"
+      }
       }
     ],
     "routes": [
