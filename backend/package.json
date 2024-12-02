@@ -21,6 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "http": "^0.0.1-security",
     "langchain": "^0.3.6",
     "mssql": "^11.0.1",
     "nodemon": "^3.1.7",
