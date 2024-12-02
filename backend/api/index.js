@@ -170,6 +170,7 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Test route works!' });
 });
 
+//
 // Route to test OpenAI client integration
 app.get('/api/client', async (req, res) => {
   try {
