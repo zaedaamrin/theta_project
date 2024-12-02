@@ -102,11 +102,11 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const swaggerUI = require('swagger-ui-express');
-const swaggerDocument = JSON.parse(fs.readFileSync('./openapi.json', 'utf8'));
+const swaggerDocument = JSON.parse(fs.readFileSync('../openapi.json', 'utf8'));
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { client } = require('./models/completionModel');
-const { router: userRouter } = require('./routes/users');
+const { client } = require('../models/completionModel');
+const { router: userRouter } = require('../routes/users');
 
 // Load environment variables
 dotenv.config();
