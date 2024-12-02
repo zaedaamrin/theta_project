@@ -192,7 +192,7 @@ async function generateResponse(userMessage,userId) {
       // send request to openai api
       const result = await client.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, inform the user and offer general guidance if appropriate. Always ensure your responses are clear, concise, and relevant to the query from the user.' },
+          { role: 'system', content: 'You are a professional assistant that helps users recall and understand information from online content they have provided. Use the given context to answer their questions accurately and concisely. If the required information is not in the provided content, do not generate any response. Always ensure your responses are clear, concise, and relevant to the query from the user.' },
           { role: 'user', content: `Context: ${context}\n\nQuestion: ${userMessage}` },
         ],
         model: 'gpt-4',
