@@ -138,7 +138,7 @@ app.use(express.json());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Register user routes
-app.use(userRouter);
+// app.use(userRouter);
 
 // Dynamically load additional routers from the "routes" directory
 const routersPath = '../routes';
