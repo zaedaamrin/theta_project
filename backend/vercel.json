@@ -1,18 +1,15 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "backend/api/index.js",
-        "use": "@vercel/node",
-        "config": {
-        "buildCommand": "npm install"
-      }
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/backend/api/index.js"
-      }
-    ]
-  }  
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    }
+  ]
+}
