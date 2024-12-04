@@ -105,7 +105,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = JSON.parse(fs.readFileSync('./public/openapi.json', 'utf8'));
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { client } = require('../models/completionModel');
+// const { client } = require('../models/completionModel');
 // const { router: userRouter } = require('../routes/users');
 
 // Load environment variables
@@ -171,23 +171,23 @@ app.get('/api/test', (req, res) => {
 
 //
 // Route to test OpenAI client integration
-app.get('/api/client', async (req, res) => {
-  try {
-    const result = await client.chat.completions.create({
-      messages: [
-        { role: "system", content: "You are a helpful assistant. You will talk professionally." },
-        { role: "user", content: "What is a RAG pattern?" },
-      ],
-      model: "",
-    });
+// app.get('/api/client', async (req, res) => {
+//   try {
+//     const result = await client.chat.completions.create({
+//       messages: [
+//         { role: "system", content: "You are a helpful assistant. You will talk professionally." },
+//         { role: "user", content: "What is a RAG pattern?" },
+//       ],
+//       model: "",
+//     });
 
-    const responseMessages = result.choices.map(choice => choice.message.content);
-    res.json({ response: responseMessages[0] });
-  } catch (error) {
-    console.error("Error testing OpenAI client:", error);
-    res.status(500).json({ message: error.message });
-  }
-});
+//     const responseMessages = result.choices.map(choice => choice.message.content);
+//     res.json({ response: responseMessages[0] });
+//   } catch (error) {
+//     console.error("Error testing OpenAI client:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
 // Export the app as a serverless function
 const serverless = require('serverless-http');
