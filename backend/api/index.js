@@ -106,7 +106,7 @@ const swaggerDocument = JSON.parse(fs.readFileSync('./public/openapi.json', 'utf
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { client } = require('../models/completionModel');
-const { router: userRouter } = require('../routes/users');
+// const { router: userRouter } = require('../routes/users');
 
 // Load environment variables
 dotenv.config();
