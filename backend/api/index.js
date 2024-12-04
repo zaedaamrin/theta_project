@@ -141,13 +141,12 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(userRouter);
 
 // Dynamically load additional routers from the "routes" directory
-const routersPath = './routes';
+const routersPath = '../routes';
 
 async function loadRouters() {
   try {
     const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js'));
 
-    // Dynamically require each router file
     files.forEach((file) => {
       const routerModule = require(path.resolve(routersPath, file));
       const router = routerModule.default || routerModule.router;
