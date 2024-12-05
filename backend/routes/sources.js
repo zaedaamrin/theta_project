@@ -10,7 +10,7 @@ router.delete('/api/:userId/sources/:sourceId', sourceController.deleteSource);
 //confirm with team if this function should be in sources or chats
 // router.post('/api/sources/searchSimilar', sourceController.searchSimilar);
 
-app.get('/api/testsource', (req, res) => {
+router.get('/api/testsource', (req, res) => {
     res.send('Successful');
   });
 

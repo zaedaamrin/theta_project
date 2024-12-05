@@ -3,7 +3,7 @@ const { userController } = require("../controllers/users.js");
 
 const router = new Router();
 
-app.get('/api/testuser', (req, res) => {
+router.get('/api/testuser', (req, res) => {
     res.send('user route successful');
   });
 
