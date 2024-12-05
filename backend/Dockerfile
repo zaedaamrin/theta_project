@@ -49,22 +49,13 @@ RUN apt-get update && apt-get install -y \
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
-    libcups2 \
     libxcomposite1 \
     libxrandr2 \
     libgbm1 \
     libpango-1.0-0 \
     libasound2 \
-    libxdamage1 \
     libxkbcommon0 \
     libglu1-mesa \
-    gstreamer1.0-gl \
-    gstreamer1.0-libav \
-    libavif-dev \
-    libenchant-2-dev \
-    libsecret-1-dev \
-    libmanette-dev \
-    libgles2-mesa-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
