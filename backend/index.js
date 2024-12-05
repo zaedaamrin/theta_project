@@ -94,7 +94,7 @@ const fs = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = JSON.parse(fs.readFileSync('./openapi.json', 'utf8'));
 const cors = require('cors');
-const { router: userRouter } = require('./routes/users');
+// const { router: userRouter } = require('./routes/users');
 
 const dotenv = require('dotenv');
 const { client } = require('./models/completionModel');
@@ -109,7 +109,7 @@ const app = express();
 app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
-      'http://localhost:3000',  // Local development
+      'http://localhost:3000',  
       'https://microsoft-smart-memory-80m8z9drd-zaedaamrins-projects.vercel.app',
       'https://microsoft-smart-memory.vercel.app/' // Vercel frontend URL
     
@@ -130,7 +130,7 @@ app.use(express.json());   //create middleware
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // Register user routes
-app.use(userRouter);
+// app.use(userRouter);
 
 // Dynamically load additional routers
 const routersPath = './routes';
@@ -155,10 +155,6 @@ loadRouters().catch(err => console.error('Error loading routers:', err));
 // Test routes
 app.get('/api', (req, res) => {
   res.send('Welcome to Smart Memory!');
-});
-
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Test route works!' });
 });
 
 app.get('/api/client', async (req, res) => {
