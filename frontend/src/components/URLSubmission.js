@@ -56,7 +56,7 @@ const URLSubmissionTable = ({ onClose }) => {
         for (const item of urlList) {
           console.log('Posting source:', item.url);
 
-          const response = await fetch(`http://localhost:8000/api/${userId}/sources`, {
+          const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/sources`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
