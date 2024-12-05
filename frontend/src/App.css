@@ -422,7 +422,7 @@ body, html {
   text-decoration: underline;
 }
 
-.url-submission-page {
+/* .url-submission-page {
   background-color: #000000;
   color: white;
   height: 100vh;
@@ -431,7 +431,30 @@ body, html {
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+} */
+
+/* 默认样式 */
+.url-submission-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
+
+/* Dark 模式 */
+.url-submission-page.dark {
+  background-color: #000000;
+  color: white;
+}
+
+/* Light 模式 */
+.url-submission-page.light {
+  background-color: #ffffff;
+  color: black;
+}
+
 
 .url-submission-container {
   background-color: #fff;
@@ -721,7 +744,8 @@ body, html {
   background-color: #000;
   color: white;
   padding: 20px;
-  overflow: hidden; /* Prevent scrolling */
+  overflow: hidden;
+ 
 }
 
 .chat-messages {
@@ -731,13 +755,13 @@ body, html {
   background-color: #111;
   padding: 10px;
   border-radius: 5px;
-  display: flex;
-  flex-direction: column; /* Ensure messages stack vertically */
+  display: flex; /* This must be set */
+  flex-direction: column; /* Messages should stack vertically */
 }
 
 .message {
   max-width: 70%;
-  padding: 10px;
+  padding: 1px 20px;
   border-radius: 10px;
   margin-bottom: 10px;
   color: #333;
@@ -745,18 +769,23 @@ body, html {
   font-size:18px;
 }
 
-.bot-message {
-  align-self: flex-start;
-  background-color: white;
-  border-radius: 10px 10px 10px 0;
-  font-size:18px;
-}
-
 .user-message {
-  align-self: flex-end;
+  align-self: flex-end !important;
   background-color: white;
   border-radius: 10px 10px 0 10px;
-  font-size:18px;
+  font-size: 18px;
+}
+
+.bot-message {
+  align-self: flex-start !important;
+  background-color: white;
+  border-radius: 10px 10px 10px 0;
+  font-size: 18px;
+}
+
+.chat-message-container {
+  display: flex; /* Make each message a flex container */
+  flex-direction: column; /* Ensure prompt and answer stack vertically */
 }
 
 .chat-input-container {
@@ -842,4 +871,277 @@ body, html {
   color: black; /* Make the text black */
   text-decoration: none; /* Remove the underline */
 }
+
+
+
+/* Switch button styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 20px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: black;
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+/* Light mode */
+body.light-mode {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-mode .nav {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+body.light-mode .nav h1 {
+  color: #000;
+}
+
+body.light-mode .welcome-login-button,
+body.light-mode .welcome-signup-button {
+  background-color: black;
+  color: white;
+}
+
+body.light-mode .intro-container {
+  background-color: #ffffff;
+  color: black;
+}
+
+body.light-mode .feature p {
+  color: black;
+}
+
+
+/* Default footer styles for dark mode */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333333; /* Dark background */
+  color: white; /* Light text */
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+/* Light mode footer styles */
+body.light-mode .footer {
+  background-color: #f0f0f0; /* Light background */
+  color: black; /* Dark text */
+}
+
+/* Default dark mode (already works) */
+.intro-description {
+  color: white; /* Default color for dark mode */
+}
+
+/* Light mode */
+body.light-mode .intro-description {
+  color: black; /* Set text to black in light mode */
+}
+
+
+
+/* Personal Home default styles (dark mode) */
+.personal-home {
+  background-color: #1a1a1a; /* Dark background */
+  color: white; /* Light text */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Light mode for Personal Home */
+body.light-mode .personal-home {
+  background-color: #ffffff; /* Light background */
+  color: black; /* Dark text */
+}
+
+/* Section headings */
+.section-heading {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: inherit; /* Inherit color from parent */
+}
+
+/* Light mode section headings */
+body.light-mode .section-heading {
+  color: black;
+}
+
+/* Source Library and Chat History containers */
+.source-library, .chat-history {
+  background-color: #f2f2f2; /* Default background */
+  color: black; /* Default text color */
+  width: 100%;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+}
+
+/* Light mode for Source Library and Chat History */
+body.light-mode .source-library, body.light-mode .chat-history {
+  background-color: #f2f2f2; /* Background remains the same */
+  color: black; /* Text color changes to black */
+}
+
+/* List items (library and chat history) */
+.library-item, .history-item {
+  background-color: #d3d3d3; /* Gray background */
+  color: black; /* Default text color */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+/* Light mode list items */
+body.light-mode .library-item, body.light-mode .history-item {
+  background-color: #d3d3d3; /* Keep gray background */
+  color: black; /* Text remains black */
+}
+
+/* Buttons */
+.action-button {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 10px 60px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto 0;
+}
+
+/* Light mode buttons */
+body.light-mode .action-button {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.action-button:hover {
+  opacity: 0.8;
+}
+
+
+/* Light mode for login page */
+body.light-mode .login-page {
+  background-color: #ffffff; /* Background becomes white */
+  color: black; /* Default text becomes black */
+}
+
+/* Light mode for login box title */
+body.light-mode .login-container h1 {
+  color: black; /* Change title color to black in light mode */
+}
+
+
+/* Light mode for registration page */
+body.light-mode .Registrationpage {
+  background-color: #ffffff; /* Background becomes white */
+  color: black; /* Default text becomes black */
+}
+
+/* Light mode for registration box title */
+body.light-mode .registration-container h1 {
+  color: black; /* Change title color to black in light mode */
+}
+
+/* Light mode for Sidebar */
+body.light-mode .sidebar {
+  background-color: #ffffff; /* Sidebar background becomes white */
+  color: black; /* Sidebar text color becomes black */
+}
+
+body.light-mode .sidebar-header h2 {
+  color: black; /* Sidebar "Your Library" header text becomes black */
+}
+
+/* Light mode for Chat Area */
+body.light-mode .chat-area {
+  background-color: #ffffff; /* Chat area background becomes white */
+  color: black; /* Chat text color becomes black */
+}
+
+/* Light mode for Chat Input */
+body.light-mode .chat-input-container {
+  background-color: #f0f0f0; /* Chat input container background becomes light gray */
+}
+
+body.light-mode .chat-input-field {
+  background-color: #d3d3d3; /* Input field background becomes lighter gray */
+  color: black; /* Input text color becomes black */
+}
+
+/* Chat messages in light mode */
+body.light-mode .chat-messages {
+  background-color: #f9f9f9; /* Messages container background becomes light gray */
+}
+
+body.light-mode .chat-messages .message {
+  color: black; /* Text color for messages becomes black */
+}
+
+body.light-mode .chat-messages .bot-message {
+  background-color: #e0e0e0; /* Bot message background becomes light gray */
+  color: black; /* Bot message text becomes black */
+}
+
+body.light-mode .chat-messages .user-message {
+  background-color: #d3d3d3; /* User message background becomes slightly darker gray */
+  color: black; /* User message text becomes black */
+}
+
+
+
 

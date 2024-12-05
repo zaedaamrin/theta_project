@@ -18,7 +18,7 @@ const WelcomeMid = () => {
     <div className="intro-container">
       <div className="intro-content">
       <h2>My Smart Memory</h2>
-      <p>A personal assistant that saves and interacts with web content efficiently. </p>
+      <p className="intro-description">A personal assistant that saves and interacts with web content efficiently. </p>
         <div className="intro-features">
           <div className="feature">
             <div style={{

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,37 +39,97 @@ const SourceLibrary = () => {
     fetchSources();
   }, []);
 
+  const handleDelete = async (sourceId) => {
+    const userId = localStorage.getItem('userId'); // Retrieve userId from local storage
+    if (!userId) {
+      console.error('User ID not found. Please log in again.');
+      setError('User ID not found. Please log in again.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/${userId}/sources/${sourceId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setSources((prevSources) => prevSources.filter((source) => source.sourceId !== sourceId)); // Update the list
+      } else {
+        console.error('Failed to delete source:', response.status, response.statusText);
+        setError('Failed to delete the source.');
+      }
+    } catch (err) {
+      console.error('Error deleting source:', err);
+      setError('An error occurred while deleting the source.');
+    }
+  };
+
   const handleAddURLClick = () => {
     navigate('/add-url-2'); // Navigate to the "Add URL" page
   };
 
   return (
     <div className="source-library" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div className="library-content">
+      <div
+        className="library-content"
+        style={{
+          flex: 1,
+          overflowY: 'auto', // Enable vertical scrolling
+          maxHeight: '300px', // Limit the height of the scrollable area
+          border: '1px solid #ddd',
+          borderRadius: '8px',
+          padding: '10px',
+        }}
+      >
         {loading ? (
           <p>Loading sources...</p>
         ) : error ? (
           <p style={{ color: 'black', fontWeight: 'bold' }}>{error}</p>
         ) : sources.length > 0 ? (
           sources.map((source, index) => (
-            <div key={source.sourceId} className="library-item">
-              {index + 1}.{' '}
-              <a 
-                href={source.URL} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="source-link"
+            <div
+              key={source.sourceId}
+              className="library-item"
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '5px 10px',
+                minHeight: '28px',
+                borderBottom: '1px solid #ddd',
+              }}
+            >
+              <span>
+                {index + 1}.{' '}
+                <a
+                  href={source.URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="source-link"
+                >
+                  {source.title || source.URL} {/* Display title if available, otherwise URL */}
+                </a>
+              </span>
+              <button
+                onClick={() => handleDelete(source.sourceId)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'black',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                }}
+                aria-label="Delete source"
               >
-                {source.title || source.URL} {/* Display title if available, otherwise URL */}
-              </a>
+                &#x2716; {/* Unicode for black cross */}
+              </button>
             </div>
-
           ))
         ) : (
           <p>No sources available.</p>
         )}
       </div>
-      <div style={{ marginTop: 'auto' }}>
+      <div style={{ marginTop: '10px' }}>
         <button
           className="action-button"
           style={{

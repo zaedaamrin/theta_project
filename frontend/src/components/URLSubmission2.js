@@ -40,36 +40,49 @@ const URLSubmissionTable2 = () => {
     localStorage.setItem('urlList', JSON.stringify(updatedList)); // Update localStorage
   };
 
-  // const handleSubmit = () => {
-  //   if (urlList.length > 0) {
-  //     console.log('Submitted URLs:', urlList);
-  //     navigate('/chatpage', { state: { urlList } });
-  //   }
-  // };
-
   const handleSubmit = async () => {
-      if (urlList.length > 0) {
-        console.log('Submitted URLs:', urlList);
+    const userId = localStorage.getItem('userId'); // Get userId from localStorage
+    if (!userId) {
+      console.error('User ID not found. Please log in again.');
+      alert('User ID not found. Please log in again.');
+      return;
+    }
 
-        urlList.forEach(async (url) => {
-          console.log("Post this source: ", url.url)
-          const apiResponse = await fetch('http://localhost:8000/api/0/sources', {
+    if (urlList.length > 0) {
+      console.log('Submitting URLs:', urlList);
+
+      try {
+        // Loop through the URL list and post each URL
+        for (const url of urlList) {
+          console.log('Posting source:', url.url);
+
+          const apiResponse = await fetch(`http://localhost:8000/api/${userId}/sources`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ "urlName": url.name, "url": url.url }),
+            body: JSON.stringify({ urlName: url.name, url: url.url }),
           });
-  
-          console.log(apiResponse);
-        })
-        
 
+          if (!apiResponse.ok) {
+            console.error('Failed to save URL:', url.url);
+          }
+        }
+
+        // Clear the local URL list after successful submission
+        setUrlList([]);
+        localStorage.setItem('urlList', JSON.stringify([]));
+
+        // Navigate to the chat page
         navigate('/chatpage', { state: { urlList } });
+      } catch (err) {
+        console.error('Error submitting URLs:', err);
+        alert('An error occurred while submitting URLs. Please try again later.');
       }
-    };
-
-  
+    } else {
+      alert('No URLs to submit.');
+    }
+  };
 
   return (
     <div className="url-submission-container">
@@ -117,7 +130,7 @@ const URLSubmissionTable2 = () => {
         </div>
       </div>
       <div className="url-footer">
-        <p className="url-count">URL Count: {urlList.length}</p>
+        <p className="url-count">URL Count: {urlList.length}</p >
         <button onClick={handleSubmit} className="submit-button">
           Submit
         </button>
