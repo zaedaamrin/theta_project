@@ -111,7 +111,7 @@ app.use(cors({
     const allowedOrigins = [
       'http://localhost:3000',  
       'https://microsoft-smart-memory-80m8z9drd-zaedaamrins-projects.vercel.app',
-      'https://microsoft-smart-memory.vercel.app/' // Vercel frontend URL
+      'https://microsoft-smart-memory.vercel.app' // Vercel frontend URL
     
     ];
 
