@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
       libasound2 \
       libxdamage1 \
       libxkbcommon0 \
-      libglu1-mesa
+      libglu1-mesa && \
+      apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -35,8 +36,4 @@ COPY . .
 EXPOSE 8000
 
 # Define the command to run the application
-CMD ["node", "index.js"]
-
-# Command to build the docker image: docker build -t express-backend .
-
-# Command to run docker container: docker run -p 8000:8000 express-backend
+CMD ["node", "api/index.js"]
