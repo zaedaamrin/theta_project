@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build": "npm install && npx playwright install",
+    "preinstall": "apt-get update && apt-get install -y gstreamer1.0-gl gstreamer1.0-libav libavif-dev libenchant-2-dev libsecret-1-dev libmanette-dev libgles2-mesa-dev",
+    "postinstall": "npx playwright install",
+    "build": "npm install",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
