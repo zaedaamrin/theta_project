@@ -46,16 +46,13 @@ FROM node:16-bullseye
 
 # Install necessary dependencies for Playwright and other libraries
 RUN apt-get update && apt-get install -y \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libxcomposite1 \
-    libxrandr2 \
-    libgbm1 \
-    libpango-1.0-0 \
-    libasound2 \
-    libxkbcommon0 \
-    libglu1-mesa \
+    libgstgl-1.0.so.0 \
+    libgstcodecparsers-1.0.so.0 \
+    libavif.so.15 \
+    libenchant-2.so.2 \
+    libsecret-1.so.0 \
+    libmanette-0.2.so.0 \
+    libGLESv2.so.2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
