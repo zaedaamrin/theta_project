@@ -68,7 +68,7 @@ COPY package*.json ./
 RUN npm install
 
 # Upgrade npm to the latest stable version
-RUN npm install -g npm@latest
+# RUN npm install -g npm@latest
 
 # Install Playwright browsers
 RUN npx playwright install
