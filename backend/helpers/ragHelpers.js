@@ -295,7 +295,7 @@ async function getRelevantChunks(queryEmbedding, userId) {
         SELECT TOP 5 c.contentId, c.contentTextChunk, c.embedding
         FROM Content c, Sources s, UserSource us
         WHERE us.userId = @userId AND us.sourceId = s.sourceId AND c.sourceId = s.sourceId
-        ORDER BY VECTOR_DISTANCE(c.embedding, @queryEmbedding) ASC; -- Ascending order of similarity (lower distance = higher similarity)
+        ORDER BY VECTOR_DISTANCE(c.embedding, @queryEmbedding, 'euclidean') ASC; -- Pass the third argument 'euclidean'
       `);
 
     console.log('Database returned records:', result.recordset.length);
@@ -328,8 +328,10 @@ async function generateChatTitle(userFirstPrompt) {
       model: 'gpt-4',
     });
     const title = result?.choices[0]?.message?.content.trim() || 'Untitled';
-    console.log('Generated chat title:', title);
-    return title;
+    const maxLength = 50; // Set a max length for chatName
+    const chatTitle = title.length > maxLength ? title.slice(0, maxLength) : title;
+    console.log('Generated chat title:', chatTitle);
+    return chatTitle;
   } catch (error) {
     console.error('Error generating chat title:', error.message);
     throw error;
