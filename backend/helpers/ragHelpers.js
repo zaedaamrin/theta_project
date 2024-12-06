@@ -279,8 +279,6 @@ async function generateResponse(userMessage, userId) {
 }
 
 // Retrieve relevant chunks from the database using Azure SQL's VECTOR_DISTANCE function
-const sql = require('mssql');
-
 // Function to retrieve relevant chunks from the database
 async function getRelevantChunks(queryEmbedding, userId) {
   try {
