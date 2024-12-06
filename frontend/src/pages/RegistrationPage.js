@@ -66,7 +66,7 @@ const RegistrationPage = () => {
     };
 
     try {
-      const response = await fetch('https://theta-project-backend.onrender.com/api/users/signup', {
+      const response = await fetch('https://backend-theta-project.onrender.com/api/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

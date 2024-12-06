@@ -18,7 +18,7 @@ const ChatHistory = () => {
           return;
         }
 
-        const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/chats`);
+        const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/chats`);
         if (response.ok) {
           const data = await response.json();
           setChatHistory(data.chats || []);
@@ -46,7 +46,7 @@ const ChatHistory = () => {
     }
 
     try {
-      const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/chats/${chatId}`, {
+      const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/chats/${chatId}`, {
         method: 'DELETE',
       });
 
@@ -72,7 +72,7 @@ const ChatHistory = () => {
 
     try {
       // Fetch the source library to check if it contains any sources
-      const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/sources`);
+      const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/sources`);
       if (response.ok) {
         localStorage.removeItem('chatMessages');
         navigate('/chatpage');

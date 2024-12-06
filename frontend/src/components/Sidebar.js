@@ -17,7 +17,7 @@ const Sidebar = ({ onOpenModal }) => {
           return;
         }
 
-        const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/sources`);
+        const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/sources`);
         if (response.ok) {
           const data = await response.json();
           setUrlList(data.sources); // Set the sources fetched from the backend

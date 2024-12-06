@@ -16,7 +16,7 @@ const ExistingChat = ({ messages, setMessages }) => {
 
   const fetchChatHistory = async (chatId) => {
     try {
-      const response = await fetch(`https://theta-project-backend.onrender.com/api/${chatId}/chathistory`);
+      const response = await fetch(`https://backend-theta-project.onrender.com/api/${chatId}/chathistory`);
       if (response.ok) {
         const data = await response.json();
         if (data.messages) {
@@ -44,7 +44,7 @@ const ExistingChat = ({ messages, setMessages }) => {
 
       try {
         const userId = localStorage.getItem('userId');
-        const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/chats/${chatId}/message`, {
+        const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/chats/${chatId}/message`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

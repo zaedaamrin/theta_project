@@ -8,7 +8,7 @@ const ChatArea = ({ messages, setMessages }) => {
   const createChat = async () => {
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/chats`, {
+      const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/chats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const ChatArea = ({ messages, setMessages }) => {
 
     try {
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/chats/${currentChatId}/message`, {
+      const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/chats/${currentChatId}/message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

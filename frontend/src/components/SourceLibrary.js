@@ -20,7 +20,7 @@ const SourceLibrary = () => {
           return;
         }
 
-        const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/sources`); // Use the correct route
+        const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/sources`); // Use the correct route
         if (response.ok) {
           const data = await response.json();
           setSources(data.sources); // Store the sources in state
@@ -48,7 +48,7 @@ const SourceLibrary = () => {
     }
 
     try {
-      const response = await fetch(`https://theta-project-backend.onrender.com/api/${userId}/sources/${sourceId}`, {
+      const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/sources/${sourceId}`, {
         method: 'DELETE',
       });
 
