@@ -94,7 +94,9 @@ const fs = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = JSON.parse(fs.readFileSync('./openapi.json', 'utf8'));
 const cors = require('cors');
-// const { router: userRouter } = require('./routes/users');
+const { router: userRouter } = require('./routes/users.js');
+const { router: sourcesRouter } = require('./routes/sources.js');
+const { router: chatsRouter } = require('./routes/chats.js');
 
 const dotenv = require('dotenv');
 const { client } = require('./models/completionModel');
@@ -132,25 +134,30 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // Register user routes
 // app.use(userRouter);
 
+app.use(userRouter);
+app.use(sourcesRouter);
+app.use(chatsRouter);
+
 // Dynamically load additional routers
-const routersPath = './routes';
+// const routersPath = './routes';
 
-async function loadRouters() {
-  try {
-    const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js'));
 
-    // Dynamically require each router file
-    files.forEach((file) => {
-      const routerModule = require(path.resolve(routersPath, file));
-      const router = routerModule.default || routerModule.router;
-      app.use(router);
-    });
-  } catch (err) {
-    console.error('Error loading routers:', err);
-  }
-}
+// async function loadRouters() {
+//   try {
+//     const files = fs.readdirSync(routersPath).filter(file => file.endsWith('.js'));
 
-loadRouters().catch(err => console.error('Error loading routers:', err));
+//     // Dynamically require each router file
+//     files.forEach((file) => {
+//       const routerModule = require(path.resolve(routersPath, file));
+//       const router = routerModule.default || routerModule.router;
+//       app.use(router);
+//     });
+//   } catch (err) {
+//     console.error('Error loading routers:', err);
+//   }
+// }
+
+// loadRouters().catch(err => console.error('Error loading routers:', err));
 
 // Test routes
 app.get('/api', (req, res) => {
