@@ -27,6 +27,7 @@ RUN npm install
 
 # Install Playwright browsers
 RUN npx playwright install
+RUN npx playwright install-deps
 
 # Copy the rest of the application code
 COPY . .
