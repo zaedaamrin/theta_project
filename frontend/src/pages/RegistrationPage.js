@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
 import '../App.css';
 import InputField from '../components/InputField';
+import { Oval } from 'react-loader-spinner';
 
 const RegistrationPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const RegistrationPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // useEffect to clear input fields on component mount
   useEffect(() => {
@@ -34,6 +36,8 @@ const RegistrationPage = () => {
   };
 
   const handleSubmit = async (event) => {
+    setLoading(true);
+
     event.preventDefault();
 
     // Front-end input validation
@@ -76,15 +80,18 @@ const RegistrationPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        setLoading(false);
         setSuccessMessage("Registration successful! Redirecting to sign-in page...");
         setTimeout(() => {
           navigate('/signin');
         }, 1500);
       } else {
         const errorData = await response.json();
+        setLoading(false);
         setError(errorData.error || "Registration failed. Please try again.");
       }
     } catch (err) {
+      setLoading(false);
       setError("An error occurred. Please try again later.");
       console.error(err);
     }
@@ -134,8 +141,23 @@ const RegistrationPage = () => {
             {error && <p className="error-message" style={{ color: 'red' }}>{error}</p>}
             {successMessage && <p className="success-message" style={{ color: 'green' }}>{successMessage}</p>}
             
-            <button type="submit" className="register-button">
-              Sign Up
+            <button type="submit" className="register-button spinner-container">
+              <span className="button-content">
+                  {loading && (
+                    <Oval
+                      height={15}
+                      width={15}
+                      color="#ffffff"
+                      visible={true}
+                      ariaLabel="oval-loading"
+                      secondaryColor="#454545"
+                      strokeWidth={4}
+                      strokeWidthSecondary={4}
+                      style={{ marginRight: '8px' }} // Add some spacing between spinner and text
+                    />
+                  )}
+                  Sign Up
+                </span>
             </button>
           </form>
         </div>

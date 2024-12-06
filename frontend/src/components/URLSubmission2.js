@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Oval } from 'react-loader-spinner';
 
 const URLSubmissionTable2 = () => {
   const [url, setUrl] = useState('');
   const [urlName, setUrlName] = useState('');
   const [urlList, setUrlList] = useState(() => JSON.parse(localStorage.getItem('urlList')) || []);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleAddUrl = () => {
@@ -41,6 +43,7 @@ const URLSubmissionTable2 = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const userId = localStorage.getItem('userId'); // Get userId from localStorage
     if (!userId) {
       console.error('User ID not found. Please log in again.');
@@ -72,14 +75,16 @@ const URLSubmissionTable2 = () => {
         // Clear the local URL list after successful submission
         setUrlList([]);
         localStorage.setItem('urlList', JSON.stringify([]));
-
+        setLoading(false);
         // Navigate to the chat page
         navigate('/chatpage', { state: { urlList } });
       } catch (err) {
+        setLoading(false);
         console.error('Error submitting URLs:', err);
         alert('An error occurred while submitting URLs. Please try again later.');
       }
     } else {
+      setLoading(false);
       alert('No URLs to submit.');
     }
   };
@@ -131,8 +136,24 @@ const URLSubmissionTable2 = () => {
       </div>
       <div className="url-footer">
         <p className="url-count">URL Count: {urlList.length}</p >
+        
         <button onClick={handleSubmit} className="submit-button">
-          Submit
+          <span className="button-content">
+            {loading && (
+              <Oval
+                height={15}
+                width={15}
+                color="#ffffff"
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#454545"
+                strokeWidth={4}
+                strokeWidthSecondary={4}
+                style={{ marginRight: '8px' }} // Add some spacing between spinner and text
+              />
+            )}
+            Submit
+          </span>
         </button>
       </div>
     </div>

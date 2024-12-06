@@ -548,6 +548,12 @@ body, html {
   font-size: 16px;
 }
 
+.spinner-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .submit-button {
   background-color: #333;
   color: #fff;
@@ -557,6 +563,23 @@ body, html {
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-button:hover {
+  background-color: #6d6d6d;
+}
+
+.button-content {
+  display: inline-flex;
+  align-items: center; /* Align spinner and text vertically */
+  justify-content: center;
+}
+
+.button-content svg {
+  margin-right: 8px; /* Adds spacing between spinner and text */
 }
 
 .profile-avatar {
