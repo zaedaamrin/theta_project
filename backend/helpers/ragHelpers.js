@@ -279,44 +279,51 @@ async function generateResponse(userMessage, userId) {
 }
 
 // Retrieve relevant chunks from the database using Azure SQL's VECTOR_DISTANCE function
+const sql = require('mssql');
+
+// Function to retrieve relevant chunks from the database
 async function getRelevantChunks(queryEmbedding, userId) {
   try {
-    const poolConnection = await pool;
+    const poolConnection = await pool;  // Assuming 'pool' is your SQL connection pool
+
+    // Convert the query embedding to a string representation for comparison
+    const queryEmbeddingString = queryEmbedding.join(',');  // Join float array as string
+
     console.log('Retrieving relevant chunks from the database using VECTOR_DISTANCE...');
 
-    // Convert query embedding into a string or an array format that can be used in the SQL query
-    const queryEmbeddingString = queryEmbedding.join(',');
-
-    // Retrieve top 5 chunks from the database using VECTOR_DISTANCE
+    // Query the database to retrieve relevant chunks based on embedding distance
     const result = await poolConnection.request()
       .input('userId', sql.Int, userId)
-      .input('queryEmbedding', sql.NVarChar, queryEmbeddingString)
+      .input('queryEmbedding', sql.NVarChar, queryEmbeddingString)  // Pass as string
       .query(`
         SELECT TOP 5 c.contentId, c.contentTextChunk, c.embedding
-        FROM Content c, Sources s, UserSource us
-        WHERE us.userId = @userId AND us.sourceId = s.sourceId AND c.sourceId = s.sourceId
-        ORDER BY VECTOR_DISTANCE(c.embedding, @queryEmbedding, 'euclidean') ASC; -- Pass the third argument 'euclidean'
+        FROM Content c
+        JOIN Sources s ON c.sourceId = s.sourceId
+        JOIN UserSource us ON us.sourceId = s.sourceId
+        WHERE us.userId = @userId
+        ORDER BY VECTOR_DISTANCE(CAST(c.embedding AS FLOAT[]), @queryEmbedding, 'euclidean') ASC;
       `);
 
     console.log('Database returned records:', result.recordset.length);
 
+    // Map the results to the desired structure, including decoding the embedding
     const chunks = result.recordset.map(record => {
-      // Parse the embedding data into a Float32Array (if needed)
-      const embedding = JSON.parse(record.embedding); // Adjust depending on the format of the embeddings
+      // Assuming the embeddings are stored in a serializable format (e.g., JSON string)
+      const embedding = JSON.parse(record.embedding);  // Decode the embedding if necessary
+
       return {
         contentId: record.contentId,
         contentTextChunk: record.contentTextChunk,
-        embedding: embedding,
+        embedding: embedding,  // Include the decoded embedding
       };
     });
 
-    return chunks;
+    return chunks;  // Return the relevant chunks
   } catch (err) {
     console.error('Error retrieving relevant chunks:', err.message);
-    return [];
+    return [];  // Return an empty array in case of an error
   }
 }
-
 // Generate chat title based on the first prompt
 async function generateChatTitle(userFirstPrompt) {
   try {
