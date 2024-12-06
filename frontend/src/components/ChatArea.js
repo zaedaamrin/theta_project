@@ -46,6 +46,10 @@ const ChatArea = ({ messages, setMessages }) => {
     }
 
     try {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { type: 'bot', text: "Please give me a moment to think..."}, 
+      ]);
       const userId = localStorage.getItem('userId');
       const response = await fetch(`https://backend-theta-project.onrender.com/api/${userId}/chats/${currentChatId}/message`, {
         method: 'POST',
@@ -57,6 +61,7 @@ const ChatArea = ({ messages, setMessages }) => {
 
       if (response.ok) {
         const data = await response.json(); // Parse the response JSON
+        setMessages((prevMessages) => prevMessages.slice(0, prevMessages.length - 1));
         setMessages((prevMessages) => [
           ...prevMessages,
           { type: 'bot', text: data.response || 'No response from server' }, // Assuming "response" is the key for bot's reply
