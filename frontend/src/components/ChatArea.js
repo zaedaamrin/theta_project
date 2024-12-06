@@ -68,6 +68,7 @@ const ChatArea = ({ messages, setMessages }) => {
         ]);
       } else {
         console.error('Error from server:', response.status, response.statusText);
+        setMessages((prevMessages) => prevMessages.slice(0, prevMessages.length - 1));
         setMessages((prevMessages) => [
           ...prevMessages,
           { type: 'bot', text: 'Error: Unable to process the message.' },
@@ -75,6 +76,7 @@ const ChatArea = ({ messages, setMessages }) => {
       }
     } catch (err) {
       console.error('Network or other error:', err);
+      setMessages((prevMessages) => prevMessages.slice(0, prevMessages.length - 1));
       setMessages((prevMessages) => [
         ...prevMessages,
         { type: 'bot', text: 'Error: Unable to connect to the server.' },
