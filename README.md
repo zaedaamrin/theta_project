@@ -100,7 +100,7 @@ Here’s how to push your `theta_project` code to a new branch (`1019-Welcome-Pa
 5. **Push to GitHub**:
    After creating the branch, click `Publish Branch` at the bottom of the VSCode window, and VSCode will automatically push your new branch to GitHub.
 
-## Istall packages within a Docker environment:
+## Install packages within a Docker environment:
 To install packages using `npm install` within a Docker environment, you typically include the necessary commands in your `Dockerfile` or execute them within the running Docker container. Here's a step-by-step guide to explain how you can install npm packages like `react-router-dom` in a Docker environment.
 
 ### Steps to Install `npm install` in Docker Environment:
